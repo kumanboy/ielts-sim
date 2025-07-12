@@ -63,7 +63,7 @@ export default function Navbar() {
                 }`}
             >
                 <div className="flex justify-between items-center px-4 py-4 border-b border-white bg-white">
-                    <Image src="/logo.png" alt="Logo" width={120} height={30} />
+                    <Image src="/logo.png" alt="Logo" width={200} height={40} />
                     <button onClick={() => setIsOpen(false)}>
                         <X size={24} className="text-[#32CD32]" />
                     </button>
