@@ -1,0 +1,115 @@
+{
+  "title": "Listening Mock Test 1",
+  "audio": "/audio/mock-1.mp3",
+
+  "parts": [
+    {
+      "part": 1,
+      "instructions": "Write ONE WORD AND / OR A NUMBER for each answer.",
+      "questionType": "gap-fill",
+      "items": [
+        { "no": 1,  "prompt": "Dining table: ____ shape",                "answer": "round" },
+        { "no": 2,  "prompt": "Dining table: ____ years old",            "answer": "12 years" },
+        { "no": 3,  "prompt": "Dining chairs: set of ____ chairs",       "answer": ["4","four"] },
+        { "no": 4,  "prompt": "Chairs – seat material ____",             "answer": "green" },
+        { "no": 5,  "prompt": "Chairs – overall condition ____",         "answer": "reasonable" },
+        { "no": 6,  "prompt": "Desk – top drawer has a ____",            "answer": "lock" },
+        { "no": 7,  "prompt": "Desk price: £ ____",                      "answer": "50" },
+        { "no": 8,  "prompt": "Address: ____ Old Lane, Stonethorpe",     "answer": "326" },
+        { "no": 9,  "prompt": "Directions: turn ____ at crossroads",     "answer": "right" },
+        { "no": 10, "prompt": "House is opposite the ____",              "answer": "bank" }
+      ]
+    },
+
+    {
+      "part": 2,
+      "instructions": "Q 11-15 match each person to their area (A–H).  Q 16-20 label the plan A–F.",
+      "sections": [
+        {
+          "type": "matching",
+          "items": [
+            { "no": 11, "question": "Mary Brown",   "options": "A-H", "answer": "F" },
+            { "no": 12, "question": "John Stevens", "options": "A-H", "answer": "B" },
+            { "no": 13, "question": "Alison Jones", "options": "A-H", "answer": "H" },
+            { "no": 14, "question": "Tim Smith",    "options": "A-H", "answer": "G" },
+            { "no": 15, "question": "Jenny James",  "options": "A-H", "answer": "D" }
+          ]
+        },
+        {
+          "type": "label-plan",
+          "prompt": "Label the rooms on the map.",
+          "items": [
+            { "no": 16, "answer": "E" },
+            { "no": 17, "answer": "B" },
+            { "no": 18, "answer": "F" },
+            { "no": 19, "answer": "D" },
+            { "no": 20, "answer": "A" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "part": 3,
+      "instructions": "Q 21-25 match fossil type A-F.  Q 26-30 complete the flow-chart with A-H.",
+      "sections": [
+        {
+          "type": "matching",
+          "items": [
+            { "no": 21, "question": "Impression fossils",        "options": "A-F", "answer": "B" },
+            { "no": 22, "question": "Cast fossils",              "options": "A-F", "answer": "E" },
+            { "no": 23, "question": "Permineralisation fossils", "options": "A-F", "answer": "F" },
+            { "no": 24, "question": "Compaction fossils",        "options": "A-F", "answer": "C" },
+            { "no": 25, "question": "Fusain fossils",            "options": "A-F", "answer": "D" }
+          ]
+        },
+        {
+          "type": "choose-from-list",
+          "prompt": "Detecting life on another planet – flow-chart.",
+          "items": [
+            { "no": 26, "answer": "F" },
+            { "no": 27, "answer": "E" },
+            { "no": 28, "answer": "C" },
+            { "no": 29, "answer": "G" },
+            { "no": 30, "answer": "D" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "part": 4,
+      "instructions": "Write ONE WORD ONLY for each answer unless stated.",
+      "sections": [
+        {
+          "type": "mcq",
+          "prompt": "Q 31-32 choose A, B or C.",
+          "items": [
+            { "no": 31, "answer": "A" },
+            { "no": 32, "answer": "A" }
+          ]
+        },
+        {
+          "type": "gap-fill",
+          "prompt": "Q 33-37 complete the table.",
+          "items": [
+            { "no": 33, "answer": "challenge" },
+            { "no": 34, "answer": "school"    },
+            { "no": 35, "answer": "health"    },
+            { "no": 36, "answer": "interests" },
+            { "no": 37, "answer": ["tutor","tutors"] }
+          ]
+        },
+        {
+          "type": "gap-fill",
+          "prompt": "Q 38-40 complete the notes.",
+          "items": [
+            { "no": 38, "answer": "maturity" },
+            { "no": 39, "answer": "advisors" },
+            { "no": 40, "answer": "online"   }
+          ]
+        }
+      ]
+    }
+  ]
+}

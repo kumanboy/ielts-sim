@@ -1,0 +1,48 @@
+{
+  "mockId": "writing-mock-1",
+  "task1": {
+    "title": "WRITING TASK 1",
+    "timeMinutes": 20,
+    "minWords": 150,
+    "instructions": [
+      "You should spend about 20 minutes on this task.",
+      "The Pie chart gives information about the country of birth of people living in Australia and the table shows where people born in these countries live.",
+      "Summarise the information by selecting and reporting the main features and make comparisons where relevant.",
+      "You should write at least 150 words."
+    ],
+    "image": "/graph.png",
+    "pie": {
+      "title": "Country of birth of people living in Australia",
+      "series": [
+        { "label": "Australia", "value": 73 },
+        { "label": "UK", "value": 7 },
+        { "label": "New Zealand", "value": 3 },
+        { "label": "China", "value": 2 },
+        { "label": "Netherlands", "value": 1 },
+        { "label": "Other", "value": 14 }
+      ]
+    },
+    "table": {
+      "title": "Where people live in Australia",
+      "columns": ["Country", "Cities (%)", "Rural areas (%)"],
+      "rows": [
+        { "country": "UK", "cities": 89, "rural": 11 },
+        { "country": "Australia", "cities": 83, "rural": 17 },
+        { "country": "China", "cities": 99, "rural": 1 },
+        { "country": "New Zealand", "cities": 80, "rural": 20 },
+        { "country": "Netherlands", "cities": 90, "rural": 10 }
+      ]
+    }
+  },
+  "task2": {
+    "title": "WRITING TASK 2",
+    "timeMinutes": 40,
+    "minWords": 250,
+    "instructions": [
+      "You should spend about 40 minutes on this task.",
+      "People are having more and more sugar-based drinks. What are the reasons? What are the solutions to make people drink less.",
+      "You should write at least 250 words."
+    ],
+    "questionType": "causes_solutions"
+  }
+}
