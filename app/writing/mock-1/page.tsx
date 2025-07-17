@@ -1,9 +1,10 @@
 // =============================================================
 // Writing Mock 1
 // =============================================================
-// (comments unchanged – truncated above for brevity)
+// UI patterned after your Reading mock (resizable split, header timer,
+// bottom task tabs). No highlight / note features.
 //
-// Data loads from @/data/writing/mock-1.json (array OR legacy schema).
+// Data loads from @/data/writing/mock-1.json (supports array OR legacy schema).
 // =============================================================
 
 "use client";
@@ -66,49 +67,80 @@ const FALLBACK_WRITING_DATA: WritingMockData = {
     ],
 };
 
-/* ─────────────────── Adapt / Pick JSON if valid ───────────────────
-   Supports both *array* schema and *legacy* {task1,task2} schema. */
+/* ─────────────────── Schema Guards ─────────────────── */
+interface ArraySchema {
+    durationMinutes?: number;
+    tasks: unknown[];
+}
+interface LegacySchema {
+    durationMinutes?: number;
+    task1?: Partial<WritingTask>;
+    task2?: Partial<WritingTask>;
+    [k: string]: unknown;
+}
+
+function isRecord(v: unknown): v is Record<string, unknown> {
+    return typeof v === "object" && v !== null;
+}
+function isArraySchema(v: unknown): v is ArraySchema {
+    return isRecord(v) && Array.isArray((v as Record<string, unknown>).tasks);
+}
+function isLegacySchema(v: unknown): v is LegacySchema {
+    return (
+        isRecord(v) &&
+        ("task1" in v || "task2" in v)
+    );
+}
+
+/* ─────────────────── Adapt / Pick JSON if valid ─────────────────── */
 const WRITING_DATA: WritingMockData = (() => {
     try {
-        const raw: any = writingDataJson as any;
+        const raw: unknown = writingDataJson as unknown;
 
         // New schema?
-        if (raw && Array.isArray(raw.tasks)) {
-            return {
-                durationMinutes: Number(raw.durationMinutes ?? 60),
-                tasks: raw.tasks.map((t: any, i: number) => ({
-                    id: String(t.id ?? (i === 0 ? "task1" : "task2")),
-                    title: String(t.title ?? (i === 0 ? "Writing Task 1" : "Writing Task 2")),
-                    minWords: Number(t.minWords ?? (i === 0 ? 150 : 250)),
-                    instructions: Array.isArray(t.instructions) ? t.instructions.slice() : [],
-                    image: t.image ? String(t.image) : undefined,
-                })),
-            };
+        if (isArraySchema(raw)) {
+            const dur = Number(raw.durationMinutes ?? 60);
+            const tasks = raw.tasks.map((t, i): WritingTask => {
+                const obj = isRecord(t) ? t : {};
+                return {
+                    id: String((obj.id as string) ?? (i === 0 ? "task1" : "task2")),
+                    title: String((obj.title as string) ?? (i === 0 ? "Writing Task 1" : "Writing Task 2")),
+                    minWords: Number((obj.minWords as number) ?? (i === 0 ? 150 : 250)),
+                    instructions: Array.isArray(obj.instructions)
+                        ? (obj.instructions as unknown[]).map(String)
+                        : [],
+                    image: obj.image ? String(obj.image as string) : undefined,
+                };
+            });
+            return { durationMinutes: dur, tasks };
         }
 
         // Legacy schema?
-        if (raw && raw.task1 && raw.task2) {
-            const t1 = raw.task1;
-            const t2 = raw.task2;
-            return {
-                durationMinutes: Number(raw.durationMinutes ?? 60),
-                tasks: [
-                    {
-                        id: "task1",
-                        title: String(t1.title ?? "Writing Task 1"),
-                        minWords: Number(t1.minWords ?? 150),
-                        instructions: Array.isArray(t1.instructions) ? t1.instructions.slice() : [],
-                        image: t1.image ? String(t1.image) : undefined,
-                    },
-                    {
-                        id: "task2",
-                        title: String(t2.title ?? "Writing Task 2"),
-                        minWords: Number(t2.minWords ?? 250),
-                        instructions: Array.isArray(t2.instructions) ? t2.instructions.slice() : [],
-                        image: t2.image ? String(t2.image) : undefined,
-                    },
-                ],
-            };
+        if (isLegacySchema(raw)) {
+            const dur = Number(raw.durationMinutes ?? 60);
+            const t1 = (raw.task1 ?? {}) as Record<string, unknown>;
+            const t2 = (raw.task2 ?? {}) as Record<string, unknown>;
+            const tasks: WritingTask[] = [
+                {
+                    id: "task1",
+                    title: String((t1.title as string) ?? "Writing Task 1"),
+                    minWords: Number((t1.minWords as number) ?? 150),
+                    instructions: Array.isArray(t1.instructions)
+                        ? (t1.instructions as unknown[]).map(String)
+                        : [],
+                    image: t1.image ? String(t1.image as string) : undefined,
+                },
+                {
+                    id: "task2",
+                    title: String((t2.title as string) ?? "Writing Task 2"),
+                    minWords: Number((t2.minWords as number) ?? 250),
+                    instructions: Array.isArray(t2.instructions)
+                        ? (t2.instructions as unknown[]).map(String)
+                        : [],
+                    image: t2.image ? String(t2.image as string) : undefined,
+                },
+            ];
+            return { durationMinutes: dur, tasks };
         }
     } catch {
         /* ignore */
@@ -139,7 +171,7 @@ async function tgSendLong(label: string, body: string) {
         return;
     }
     const prefix = `${label}:\n`;
-    const MAX = 4000; // stay under 4096 w/ prefix
+    const MAX = 4000; // keep headroom
     let i = 0;
     while (i < body.length) {
         const chunk = body.slice(i, i + MAX);
@@ -177,8 +209,7 @@ async function sendWritingToTelegram(payload: {
         await tgSendLong("Task 1 Response", task1Text);
         // Task 2 (plain)
         await tgSendLong("Task 2 Response", task2Text);
-    } catch (err: any) {
-        // Log full Telegram error payload to help debug (chat id / membership / etc.)
+    } catch (err: unknown) {
         if (axios.isAxiosError(err)) {
             console.error("Telegram send error:", err.response?.data ?? err.message);
         } else {
@@ -366,7 +397,7 @@ export default function WritingMock1() {
                 if (prev <= 1) {
                     window.clearInterval(id);
                     setTimeExpired(true);
-                    handleSubmit();
+                    void handleSubmit(); // auto-submit
                     return 0;
                 }
                 return prev - 1;
@@ -454,7 +485,6 @@ export default function WritingMock1() {
             task2Text: t2,
         };
 
-        // Await so we catch & log API errors (no unhandled 400s).
         await sendWritingToTelegram(payload);
 
         // Clear persisted storage + in‑memory states so next attempt starts clean.

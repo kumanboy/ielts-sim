@@ -1,11 +1,14 @@
 "use client";
 
-type Props = {
-    /** answers[30‑39] slice is passed in */
+import React from "react";
+
+/* ─────────────────── Types ─────────────────── */
+export interface Part4MixedProps {
+    /** answers slice for Q31–40 (index 0=Q31 ... 9=Q40) */
     answers: string[];
-    /** bubble change back up (local 0‑9 → global 30‑39) */
+    /** bubble change back up (local 0‑9 → global Q31‑40) */
     onAnswerChangeAction: (localIdx: number, value: string) => void;
-};
+}
 
 /* ── MCQ Questions ──────────────────────── */
 const mcq = [
@@ -17,7 +20,7 @@ const mcq = [
             ["A", "age group"],
             ["B", "geographical area"],
             ["C", "socio‑economic level"],
-        ],
+        ] as const,
     },
     {
         q: 32,
@@ -27,17 +30,17 @@ const mcq = [
             ["A", "effects on their home life"],
             ["B", "implications for their future career"],
             ["C", "financial constraints"],
-        ],
+        ] as const,
     },
-];
+] as const;
 
 /* ── Blank field with placeholder numbers ───────────────────── */
-const Blank =
-    (ans: string[], set: Props["onAnswerChangeAction"]) =>
+const makeBlank =
+    (ans: string[], set: Part4MixedProps["onAnswerChangeAction"]) =>
         (idx: number, w = 90) => (
             <input
                 value={ans[idx]}
-                onChange={(e) => set(idx + 2, e.target.value)} // offset by 2 for 33–40
+                onChange={(e) => set(idx + 2, e.target.value)} // offset by 2 for Q33–40
                 className="border-0 border-b border-dotted border-gray-600 focus:border-[#32CD32] outline-none text-center"
                 style={{ width: w }}
                 placeholder={`${idx + 33}`} // shows correct Q33–40
@@ -45,11 +48,11 @@ const Blank =
         );
 
 /* ── Main Component ───────────────────── */
-export default function Part4Mixed({ answers, onAnswerChangeAction }: Props) {
+function Part4Mixed({ answers, onAnswerChangeAction }: Part4MixedProps) {
     const mcqAnswers = answers.slice(0, 2); // Q31–32
-    const blankAnswers = answers.slice(2);  // Q33–40
+    const blankAnswers = answers.slice(2); // Q33–40
 
-    const blank = Blank(blankAnswers, onAnswerChangeAction);
+    const blank = makeBlank(blankAnswers, onAnswerChangeAction);
 
     return (
         <>
@@ -74,13 +77,11 @@ export default function Part4Mixed({ answers, onAnswerChangeAction }: Props) {
                                         name={`q${q}`}
                                         value={ltr}
                                         checked={mcqAnswers[q - 31] === ltr}
-                                        onChange={() =>
-                                            onAnswerChangeAction(q - 31, ltr)
-                                        }
+                                        onChange={() => onAnswerChangeAction(q - 31, ltr)}
                                     />
                                     <span>
-                                        <span className="font-bold">{ltr}</span> {txt}
-                                    </span>
+                    <span className="font-bold">{ltr}</span> {txt}
+                  </span>
                                 </label>
                             </li>
                         ))}
@@ -101,9 +102,11 @@ export default function Part4Mixed({ answers, onAnswerChangeAction }: Props) {
                     </th>
                 </tr>
                 <tr className="bg-gray-200 text-center font-semibold leading-tight">
-                    <th className="border border-gray-700 px-6 py-6 w-56"></th>
+                    <th className="border border-gray-700 px-6 py-6 w-56" />
                     <th className="border border-gray-700 px-6 py-6 w-56">
-                        Social and&nbsp;<br />Environmental Factors
+                        Social and&nbsp;
+                        <br />
+                        Environmental Factors
                     </th>
                     <th className="border border-gray-700 px-6 py-6 w-44">Other Factors</th>
                     <th className="border border-gray-700 px-6 py-6 w-56">
@@ -125,9 +128,7 @@ export default function Part4Mixed({ answers, onAnswerChangeAction }: Props) {
                     <td className="font-semibold px-6 py-6">
                         Positive experiences at {blank(1, 70)}
                     </td>
-                    <td className="font-semibold px-6 py-6">
-                        Good {blank(2, 60)}
-                    </td>
+                    <td className="font-semibold px-6 py-6">Good {blank(2, 60)}</td>
                     <td className="font-semibold px-6 py-6">
                         Many {blank(3, 65)} in daily life
                     </td>
@@ -155,9 +156,10 @@ export default function Part4Mixed({ answers, onAnswerChangeAction }: Props) {
             <p className="mt-3">
                 Train selected students to act as {blank(6, 90)}.
             </p>
-            <p className="mt-3">
-                Outside office hours, offer {blank(7, 90)} help.
-            </p>
+            <p className="mt-3">Outside office hours, offer {blank(7, 90)} help.</p>
         </>
     );
 }
+
+Part4Mixed.displayName = "Part4Mixed";
+export default Part4Mixed;

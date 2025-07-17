@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { CSSProperties, ReactNode } from "react";
 import {
     DndContext,
     DragEndEvent,
@@ -8,17 +8,16 @@ import {
     useDraggable,
     pointerWithin,
 } from "@dnd-kit/core";
-import { CSSProperties, ReactNode } from "react";
 
-// Types
-
-type Props = {
+/* ─────────────────── Types ─────────────────── */
+export interface Part3FeaturesFlowProps {
+    /** Global answers slice for Q21‑30 (index 0=Q21 ... 9=Q30). */
     answers: string[];
+    /** Update callback: localIdx 0‑9 (Q21‑30). */
     onAnswerChange: (localIdx: number, val: string) => void;
-};
+}
 
-// Constants
-
+/* ─────────────────── Data ─────────────────── */
 const letters21_25 = [
     { v: "A", txt: "They are very rare type of plant fossils" },
     { v: "B", txt: "They do not contain any organic matter" },
@@ -39,9 +38,14 @@ const letters26_30 = [
     { v: "H", txt: "water" },
 ];
 
-const map21_25 = Object.fromEntries(letters21_25.map((o) => [o.v, o.txt]));
-const map26_30 = Object.fromEntries(letters26_30.map((o) => [o.v, o.txt]));
+const map21_25: Record<string, string> = Object.fromEntries(
+    letters21_25.map((o) => [o.v, o.txt])
+);
+const map26_30: Record<string, string> = Object.fromEntries(
+    letters26_30.map((o) => [o.v, o.txt])
+);
 
+/* ─────────────────── Draggable Chip ─────────────────── */
 function DraggableChip({ id, label }: { id: string; label: ReactNode }) {
     const { attributes, listeners, setNodeRef, transform, isDragging } =
         useDraggable({ id });
@@ -67,6 +71,7 @@ function DraggableChip({ id, label }: { id: string; label: ReactNode }) {
     );
 }
 
+/* ─────────────────── Droppable Blank ─────────────────── */
 function DroppableBlank({
                             id,
                             answer,
@@ -81,33 +86,37 @@ function DroppableBlank({
     const { setNodeRef, isOver } = useDroppable({ id });
 
     const blankIdx = parseInt(id.replace("blank-", ""), 10);
-    const questionNumber = blankIdx + 21;
+    const questionNumber = blankIdx + 21; // global Q# label
 
     return (
         <span
             ref={setNodeRef}
-            className={`inline-block min-w-[170px] min-h-[28px] border-b border-dotted outline-none text-left px-2 py-1 ${isOver ? "border-green-500" : ""}`}
+            className={`inline-block min-w-[170px] min-h-[28px] border-b border-dotted outline-none text-left px-2 py-1 ${
+                isOver ? "border-green-500" : ""
+            }`}
         >
-            {answer ? (
-                <>
-                    <span className="font-bold">{answer}</span>&nbsp;
-                    <span>{labelMap[answer]}</span>
-                    <button
-                        onClick={onClear}
-                        className="ml-1 text-red-500 text-sm hover:underline"
-                        type="button"
-                    >
-                        ×
-                    </button>
-                </>
-            ) : (
-                <span className="text-gray-400 font-semibold">{questionNumber}</span>
-            )}
-        </span>
+      {answer ? (
+          <>
+              <span className="font-bold">{answer}</span>&nbsp;
+              <span>{labelMap[answer]}</span>
+              <button
+                  onClick={onClear}
+                  className="ml-1 text-red-500 text-sm hover:underline"
+                  type="button"
+              >
+                  ×
+              </button>
+          </>
+      ) : (
+          <span className="text-gray-400 font-semibold">{questionNumber}</span>
+      )}
+    </span>
     );
 }
 
-export default function Part3FeaturesFlow({ answers, onAnswerChange }: Props) {
+/* ─────────────────── Component ─────────────────── */
+function Part3FeaturesFlow({ answers, onAnswerChange }: Part3FeaturesFlowProps) {
+    // slice: 0‑4 = Q21‑25; 5‑9 = Q26‑30
     const chosen21_25 = answers.slice(0, 5);
     const chosen26_30 = answers.slice(5, 10);
 
@@ -118,9 +127,9 @@ export default function Part3FeaturesFlow({ answers, onAnswerChange }: Props) {
         const { active, over } = event;
         if (!active?.id || !over?.id) return;
 
-        const dragged = String(active.id);
-        const letter = dragged.slice(2);
-        const targetId = String(over.id);
+        const dragged = String(active.id); // e.g., "21A" or "26B"
+        const letter = dragged.slice(2); // after "21"/"26" prefix
+        const targetId = String(over.id); // "blank-0" .. "blank-9"
 
         const idx = parseInt(targetId.replace("blank-", ""), 10);
         if (!Number.isNaN(idx)) {
@@ -130,8 +139,10 @@ export default function Part3FeaturesFlow({ answers, onAnswerChange }: Props) {
 
     return (
         <DndContext onDragEnd={handleDragEnd} collisionDetection={pointerWithin}>
+            {/* ---------- Q21‑25 ---------- */}
             <p className="mt-8 font-medium">
-                <strong>Questions 21–25</strong> – Which feature do the speakers identify for each of the following categories of fossil?
+                <strong>Questions 21–25</strong> – Which feature do the speakers identify
+                for each of the following categories of fossil?
             </p>
 
             <ul className="border mt-3 p-4 space-y-1 w-max text-sm leading-5">
@@ -150,8 +161,14 @@ export default function Part3FeaturesFlow({ answers, onAnswerChange }: Props) {
             </ul>
 
             <div className="mt-4 space-y-2 text-sm">
-                {["Impression fossils", "Cast fossils", "Permineralisation fossils", "Compaction fossils", "Fusain fossils"].map((name, i) => (
-                    <div key={i} className="flex items-start gap-3">
+                {[
+                    "Impression fossils",
+                    "Cast fossils",
+                    "Permineralisation fossils",
+                    "Compaction fossils",
+                    "Fusain fossils",
+                ].map((name, i) => (
+                    <div key={name} className="flex items-start gap-3">
                         <div className="w-6 pt-1 font-bold">{21 + i}</div>
                         <div className="w-56">{name}</div>
                         <DroppableBlank
@@ -164,8 +181,10 @@ export default function Part3FeaturesFlow({ answers, onAnswerChange }: Props) {
                 ))}
             </div>
 
+            {/* ---------- Q26‑30 ---------- */}
             <p className="mt-10 font-medium">
-                <strong>Questions 26–30</strong> – Complete the flow-chart. Choose the correct letter A–H.
+                <strong>Questions 26–30</strong> – Complete the flow-chart. Choose the
+                correct letter A–H.
             </p>
 
             <div className="border mt-3 p-4 grid grid-cols-2 gap-x-10 gap-y-1 w-max text-sm">
@@ -184,7 +203,7 @@ export default function Part3FeaturesFlow({ answers, onAnswerChange }: Props) {
             </div>
 
             <div className="mt-6 space-y-5 text-sm">
-                {[26, 27, 28, 29, 30].map((q, i) => (
+                {[26, 27, 28, 29, 30].map((q) => (
                     <div key={q} className="flex gap-3 items-start">
                         <div className="w-4 pt-1 font-bold">{q}.</div>
                         <div className="flex-1 border p-2 rounded shadow-sm">
@@ -192,24 +211,75 @@ export default function Part3FeaturesFlow({ answers, onAnswerChange }: Props) {
                                 switch (q) {
                                     case 26:
                                         return (
-                                            <>A spacecraft lands on a planet and sends out a rover. The rover is directed to a <DroppableBlank id="blank-5" answer={chosen26_30[0] ?? ""} labelMap={map26_30} onClear={() => onAnswerChange(5, "")} /> which has organic material.</>
+                                            <>
+                                                A spacecraft lands on a planet and sends out a rover. The rover is
+                                                directed to a{" "}
+                                                <DroppableBlank
+                                                    id="blank-5"
+                                                    answer={chosen26_30[0] ?? ""}
+                                                    labelMap={map26_30}
+                                                    onClear={() => onAnswerChange(5, "")}
+                                                />{" "}
+                                                which has organic material.
+                                            </>
                                         );
                                     case 27:
                                         return (
-                                            <>It collects a sample from below the surface (in order to avoid the effects of <DroppableBlank id="blank-6" answer={chosen26_30[1] ?? ""} labelMap={map26_30} onClear={() => onAnswerChange(6, "")} />). The soil and rocks are checked to look for evidence of fossils. The sample is converted to powder.</>
+                                            <>
+                                                It collects a sample from below the surface (in order to avoid the
+                                                effects of{" "}
+                                                <DroppableBlank
+                                                    id="blank-6"
+                                                    answer={chosen26_30[1] ?? ""}
+                                                    labelMap={map26_30}
+                                                    onClear={() => onAnswerChange(6, "")}
+                                                />
+                                                ). The soil and rocks are checked to look for evidence of fossils.
+                                                The sample is converted to powder.
+                                            </>
                                         );
                                     case 28:
                                         return (
-                                            <>The sample is subjected to <DroppableBlank id="blank-7" answer={chosen26_30[2] ?? ""} labelMap={map26_30} onClear={() => onAnswerChange(7, "")} />.</>
+                                            <>
+                                                The sample is subjected to{" "}
+                                                <DroppableBlank
+                                                    id="blank-7"
+                                                    answer={chosen26_30[2] ?? ""}
+                                                    labelMap={map26_30}
+                                                    onClear={() => onAnswerChange(7, "")}
+                                                />
+                                                .
+                                            </>
                                         );
                                     case 29:
                                         return (
-                                            <>A mass spectrometer is used to search for potential proof of life, e.g. <DroppableBlank id="blank-8" answer={chosen26_30[3] ?? ""} labelMap={map26_30} onClear={() => onAnswerChange(8, "")} />.</>
+                                            <>
+                                                A mass spectrometer is used to search for potential proof of life,
+                                                e.g.{" "}
+                                                <DroppableBlank
+                                                    id="blank-8"
+                                                    answer={chosen26_30[3] ?? ""}
+                                                    labelMap={map26_30}
+                                                    onClear={() => onAnswerChange(8, "")}
+                                                />
+                                                .
+                                            </>
                                         );
                                     case 30:
                                         return (
-                                            <>The <DroppableBlank id="blank-9" answer={chosen26_30[4] ?? ""} labelMap={map26_30} onClear={() => onAnswerChange(9, "")} /> are compared with existing data from Earth.</>
+                                            <>
+                                                The{" "}
+                                                <DroppableBlank
+                                                    id="blank-9"
+                                                    answer={chosen26_30[4] ?? ""}
+                                                    labelMap={map26_30}
+                                                    onClear={() => onAnswerChange(9, "")}
+                                                />{" "}
+                                                are compared with existing data from Earth.
+                                            </>
                                         );
+                                    default:
+                                        return null;
                                 }
                             })()}
                         </div>
@@ -219,3 +289,6 @@ export default function Part3FeaturesFlow({ answers, onAnswerChange }: Props) {
         </DndContext>
     );
 }
+
+Part3FeaturesFlow.displayName = "Part3FeaturesFlow";
+export default Part3FeaturesFlow;
