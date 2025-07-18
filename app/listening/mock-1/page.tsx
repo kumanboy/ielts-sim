@@ -42,18 +42,32 @@ export default function ListeningMock1() {
     const router = useRouter();
 
     /* ─── base state ─────────────────────────────── */
-    const [showIntro, setShowIntro] = useState(true);
-    const [result, setResult] = useState<{ correct: number; band: number } | null>(null);
-    const [submitted, setSubmitted] = useState(false);
-    const [currentPart, setCurrentPart] = useState<1 | 2 | 3 | 4>(1);
-    const [currentIdx, setCurrentIdx] = useState(0);
-    const [answers, setAnswers] = useState<string[]>(Array(40).fill(""));
-    const [volume, setVolume] = useState(1);
-    const [muted, setMuted] = useState(false);
-    const [timeLeft, setTimeLeft] = useState(35 * 60);
-    const [showUserForm, setShowUserForm] = useState(true);
-    const [userInfo, setUserInfo] = useState({firstName: "", lastName: "", phone: ""});
-    const [timeExpired, setTimeExpired] = useState(false);
+    /* ---------- top‑level state ---------- */
+    const [showCodeModal, setShowCodeModal] = useState(true);      // ❶ first screen
+    const [codeInput, setCodeInput]         = useState("");
+    const [codeErr,   setCodeErr]           = useState("");
+    const [showWrongModal, setShowWrongModal] = useState(false);   // ❷ wrong‑code dialog
+
+    const [showUserForm, setShowUserForm]   = useState(false);     // ❸ appears after code
+    const [userInfo, setUserInfo] = useState({
+        firstName: "", lastName: "", phone: ""
+    });
+
+    const [showIntro, setShowIntro]         = useState(false);     // ❹ appears after form
+    const [currentPart, setCurrentPart]     = useState<1 | 2 | 3 | 4>(1);
+    const [currentIdx,  setCurrentIdx]      = useState(0);
+    const [answers,     setAnswers]         = useState<string[]>(Array(40).fill(""));
+
+    const [volume, setVolume]               = useState(1);
+    const [muted,  setMuted]                = useState(false);
+    const [timeLeft, setTimeLeft]           = useState(35 * 60);
+    const [timeExpired, setTimeExpired]     = useState(false);
+
+    const [submitted, setSubmitted]         = useState(false);
+    const [result, setResult]               = useState<{ correct: number; band: number } | null>(null);
+    const [running, setRunning]         = useState(false); // ⬅️ NEW – starts timer + audio
+
+
 
 
     /* ─── notes / highlights ─────────────────────── */
@@ -143,20 +157,29 @@ export default function ListeningMock1() {
 
     // timer
     useEffect(() => {
-        const timer = setInterval(() => {
+        if (!running) return;               // wait until Start is pressed
+        const t = setInterval(() => {
             setTimeLeft((prev) => {
                 if (prev <= 1) {
-                    clearInterval(timer);
+                    clearInterval(t);
                     setTimeExpired(true);
-
-                    if (!hasSubmittedRef.current) handleSubmit();   // now uses latest answers
+                    if (!hasSubmittedRef.current) handleSubmit();
                     return 0;
                 }
                 return prev - 1;
             });
         }, 1000);
-        return () => clearInterval(timer);
-    }, []);
+
+        return () => clearInterval(t);      // cleanup when running → false
+    }, [running]);                         // ← add dependency
+
+    /* play audio the moment “running” becomes true and <audio> is on the page */
+    useEffect(() => {
+        if (running && audioRef.current) {
+            audioRef.current.play().catch(() => {});
+        }
+    }, [running]);
+
 
 
     /* selection pop-over handler (restores use of the setters) */
@@ -201,9 +224,10 @@ export default function ListeningMock1() {
 
     /* ─── handlers ────────────────────────────────── */
     const start = () => {
-        setShowIntro(false);
-        setTimeout(() => audioRef.current?.play(), 80);
+        setShowIntro(false);   // hide modal
+        setRunning(true);      // this flips the “running” flag
     };
+
     const handleSubmit = () => {
         if (hasSubmittedRef.current) return;
         hasSubmittedRef.current = true;
@@ -221,6 +245,8 @@ export default function ListeningMock1() {
             sendTelegramResult(firstName, lastName, phone, correct, band);
         }
     };
+
+
 
 
 
@@ -281,7 +307,83 @@ export default function ListeningMock1() {
     return (
 
         <section className="h-screen flex flex-col bg-white">
-            {/* intro modal */}
+
+            {showCodeModal && (
+                <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
+                    <div className="bg-white p-6 rounded shadow max-w-xs w-full text-center space-y-4">
+                        <h2 className="text-xl font-bold text-[#32CD32]">Enter Access Code</h2>
+
+                        <input
+                            type="text"
+                            maxLength={4}
+                            value={codeInput}
+                            onChange={(e) =>
+                                setCodeInput(e.target.value.replace(/[^0-9]/g, ""))
+                            }
+                            className="w-full border p-2 rounded text-center tracking-widest text-2xl"
+                            placeholder="0000"
+                        />
+
+                        {codeErr && <p className="text-red-600 text-sm">{codeErr}</p>}
+
+                        <button
+                            className="bg-[#32CD32] text-white px-6 py-2 rounded w-full"
+                            onClick={async () => {
+                                const r = await fetch("/api/verify-code", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ code: codeInput })
+                                });
+
+                                if (r.ok) {
+                                    // success → show user‑info form next
+                                    setShowCodeModal(false);
+                                    setShowUserForm(true);
+                                    setCodeInput("");
+                                    setCodeErr("");
+                                } else {
+                                    // failure → show wrong‑code modal
+                                    setShowCodeModal(false);
+                                    setShowWrongModal(true);
+                                }
+                            }}
+                        >
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            )}
+
+
+            {showWrongModal && (
+                <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
+                    <div className="bg-white p-6 rounded shadow max-w-sm w-full text-center space-y-4">
+                        <h2 className="text-xl font-bold text-red-600">Incorrect Code</h2>
+                        <p>
+                            Please enter the correct code or&nbsp;
+                            <a
+                                href="https://t.me/ielts_school_admin"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="underline text-[#32CD32] font-semibold"
+                            >
+                                reach out to IELTS‑School administration
+                            </a>.
+                        </p>
+
+                        <button
+                            className="bg-[#32CD32] text-white px-6 py-2 rounded w-full"
+                            onClick={() => {
+                                setShowWrongModal(false);
+                                setShowCodeModal(true);
+                                setCodeInput("");
+                            }}
+                        >
+                            Try Again
+                        </button>
+                    </div>
+                </div>
+            )}
 
 
             {showUserForm && (
@@ -293,35 +395,35 @@ export default function ListeningMock1() {
                             type="text"
                             placeholder="First Name"
                             value={userInfo.firstName}
-                            onChange={(e) => setUserInfo({...userInfo, firstName: e.target.value})}
+                            onChange={(e) => setUserInfo({ ...userInfo, firstName: e.target.value })}
                             className="w-full border p-2 rounded"
                         />
                         <input
                             type="text"
                             placeholder="Last Name"
                             value={userInfo.lastName}
-                            onChange={(e) => setUserInfo({...userInfo, lastName: e.target.value})}
+                            onChange={(e) => setUserInfo({ ...userInfo, lastName: e.target.value })}
                             className="w-full border p-2 rounded"
                         />
                         <input
                             type="tel"
                             placeholder="Phone Number"
                             value={userInfo.phone}
-                            onChange={(e) => setUserInfo({...userInfo, phone: e.target.value})}
+                            onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
                             className="w-full border p-2 rounded"
                         />
 
                         <button
                             className="bg-green-600 text-white px-6 py-2 rounded disabled:opacity-40"
+                            disabled={!userInfo.firstName || !userInfo.lastName || !userInfo.phone}
                             onClick={() => {
                                 if (userInfo.firstName && userInfo.lastName && userInfo.phone) {
                                     setShowUserForm(false);
                                     setShowIntro(true);
                                 }
                             }}
-                            disabled={!userInfo.firstName || !userInfo.lastName || !userInfo.phone}
                         >
-                            Submit
+                            Continue
                         </button>
                     </div>
                 </div>
@@ -332,25 +434,26 @@ export default function ListeningMock1() {
                     <div className="bg-white p-6 rounded shadow max-w-md text-center space-y-4">
                         <h2 className="text-2xl font-bold text-[#32CD32]">Listening Test</h2>
                         <p>
-                            40 questions in 4 parts. Audio starts after you click{" "}
+                            40 questions in 4 parts. Audio starts after you click&nbsp;
                             <strong>Start</strong>.
                         </p>
-                        <button onClick={start} className="bg-[#32CD32] text-white px-6 py-2 rounded">
+                        <button
+                            onClick={start}   /* <- your existing start() fn */
+                            className="bg-[#32CD32] text-white px-6 py-2 rounded"
+                        >
                             Start
                         </button>
                     </div>
                 </div>
             )}
 
-
-            {/* result modal */}
             {result && (
                 <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
                     <div className="bg-white p-6 rounded shadow max-w-md text-center space-y-4">
                         <h2 className="text-3xl font-bold text-[#32CD32]">Your Score</h2>
                         <p className="text-2xl font-semibold">{result.correct}/40 answers</p>
                         <p className="text-xl">
-                            Band score <strong>{result.band}</strong>
+                            Band score&nbsp;<strong>{result.band}</strong>
                         </p>
                         <button
                             onClick={() => {
@@ -364,6 +467,7 @@ export default function ListeningMock1() {
                     </div>
                 </div>
             )}
+
 
             {/* main layout */}
             {!showIntro && (
@@ -383,7 +487,7 @@ export default function ListeningMock1() {
                         </div>
 
                         <div className="flex items-center gap-3">
-                            <audio ref={audioRef} src="/audio/mock-1.mp3" autoPlay/>
+                            <audio ref={audioRef} src="/audio/mock-1.mp3"/>
 
                             <div className="flex items-center gap-1">
                                 <button

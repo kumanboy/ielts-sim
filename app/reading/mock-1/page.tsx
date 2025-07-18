@@ -242,6 +242,7 @@ function MCQAnswer({
 }
 
 /* ───────────────── Question block ───────────────── */
+/* ───────────────── Question block ───────────────── */
 function QuestionBlock({
                            q,
                            ans,
@@ -254,6 +255,7 @@ function QuestionBlock({
     const name = `q-${q.number}`;
     const t = q.type.toUpperCase();
 
+    /* --- TRUE / FALSE / NOT‑GIVEN --- */
     if (t.includes("TRUE_FALSE_NOT_GIVEN")) {
         return (
             <div id={`question-${q.number - 1}`} className="mt-4">
@@ -265,6 +267,7 @@ function QuestionBlock({
         );
     }
 
+    /* --- YES / NO / NOT‑GIVEN --- */
     if (t.includes("YES_NO_NOT_GIVEN")) {
         return (
             <div id={`question-${q.number - 1}`} className="mt-4">
@@ -281,6 +284,7 @@ function QuestionBlock({
         );
     }
 
+    /* --- MCQ (A‑D etc.) --- */
     if (t.includes("MULTIPLE_CHOICE")) {
         return (
             <div id={`question-${q.number - 1}`} className="mt-4">
@@ -297,6 +301,32 @@ function QuestionBlock({
         );
     }
 
+    /* --- FILL‑IN‑THE‑BLANK --- */
+    if (t.includes("FILL_IN_THE_BLANK")) {
+        /* replace any run of 3+ underscores with the input */
+        const segs = q.question.split(/_{3,}/);
+        return (
+            <div id={`question-${q.number - 1}`} className="mt-4">
+                <p className="font-semibold mb-1">
+                    {q.number}.{" "}
+                    {segs.map((part, i) => (
+                        <React.Fragment key={i}>
+                            {part}
+                            {i < segs.length - 1 && (
+                                <TextAnswer
+                                    value={ans}
+                                    onChange={onChange}
+                                    placeholder={`${q.number}`}
+                                />
+                            )}
+                        </React.Fragment>
+                    ))}
+                </p>
+            </div>
+        );
+    }
+
+    /* --- default (rare) --- */
     return (
         <div id={`question-${q.number - 1}`} className="mt-4">
             <p className="font-semibold mb-1">
@@ -306,6 +336,7 @@ function QuestionBlock({
         </div>
     );
 }
+
 
 /* ───────────────── Passage renderer ───────────────── */
 function PassageView({ passage }: { passage: string }) {
@@ -907,6 +938,8 @@ function Passage3Part({ part, answers, onAnswerChange }: Passage3PartProps) {
     );
 }
 
+
+
 /* ───────────────── Component ───────────────── */
 export default function ReadingMock1() {
     const router = useRouter();
@@ -929,13 +962,20 @@ export default function ReadingMock1() {
     );
 
     /* ---- state ---- */
-    const [showIntro, setShowIntro] = useState(false);
-    const [showUserForm, setShowUserForm] = useState(true);
+    const [showCodeModal, setShowCodeModal] = useState(true);   // 1️⃣ first modal
+    const [showUserForm,  setShowUserForm]  = useState(false);  // 2️⃣ opens after code OK
+    const [showIntro,     setShowIntro]     = useState(false);
+
+    const [codeInput, setCodeInput] = useState("");
+    const [codeErr,   setCodeErr]   = useState("");             // (we’ll clear & reuse)
+    const [showWrongModal, setShowWrongModal] = useState(false);
+
     const [userInfo, setUserInfo] = useState({
         firstName: "",
-        lastName: "",
-        phone: "",
+        lastName : "",
+        phone    : "",
     });
+
 
     const [currentPart, setCurrentPart] = useState<0 | 1 | 2>(0);
     const [currentIdx, setCurrentIdx] = useState(0);
@@ -1191,16 +1231,91 @@ export default function ReadingMock1() {
     /* ---- UI ---- */
     return (
         <section className="h-screen flex flex-col bg-white">
-            {/* ───────────── User Form ───────────── */}
+            {/* ─────────────────── 1. ACCESS‑CODE MODAL ─────────────────── */}
+            {showCodeModal && (
+                <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
+                    <div className="bg-white p-6 rounded shadow max-w-xs w-full space-y-4 text-center">
+                        <h2 className="text-xl font-bold text-[#32CD32]">Enter Access Code</h2>
+
+                        <input
+                            type="text"
+                            maxLength={4}
+                            value={codeInput}
+                            onChange={(e) =>
+                                setCodeInput(e.target.value.replace(/[^0-9]/g, ""))
+                            }
+                            className="w-full border p-2 rounded text-center tracking-widest text-2xl"
+                            placeholder="0000"
+                        />
+
+                        {codeErr && <p className="text-red-600 text-sm">{codeErr}</p>}
+
+                        <button
+                            className="bg-[#32CD32] text-white px-6 py-2 rounded w-full"
+                            onClick={async () => {
+                                const res = await fetch("/api/verify-code", {
+                                    method : "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body   : JSON.stringify({ code: codeInput }),
+                                });
+
+                                if (res.ok) {
+                                    // ✅ correct 4‑digit code
+                                    setShowCodeModal(false);   // hide access‑code modal
+                                    setShowUserForm(true);     // open user‑info modal
+                                    setCodeInput("");
+                                    setCodeErr("");
+                                } else {
+                                    // ❌ wrong code – show error dialog
+                                    setShowCodeModal(false);
+                                    setShowWrongModal(true);
+                                }
+                            }}
+                        >
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* ───── Wrong‑code Modal ───── */}
+            {showWrongModal && (
+                <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
+                    <div className="bg-white p-6 rounded shadow max-w-xs w-full space-y-4 text-center">
+                        <h2 className="text-xl font-bold text-red-600">Invalid Code</h2>
+                        <p>
+                            Please enter the correct code or&nbsp;
+                            <a
+                                href="https://t.me/ielts_school"
+                                target="_blank"
+                                rel="noopener"
+                                className="text-blue-600 underline"
+                            >
+                                reach out to IELTS‑School administration
+                            </a>.
+                        </p>
+
+                        <button
+                            className="bg-gray-300 px-4 py-1 rounded w-full"
+                            onClick={() => {
+                                setShowWrongModal(false); // close error dialog
+                                setShowCodeModal(true);   // reopen code modal
+                                setCodeInput("");
+                            }}
+                        >
+                            Try again
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* ─────────────────── 2. USER‑INFO MODAL ─────────────────── */}
             {showUserForm && (
                 <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
                     <div className="bg-white p-6 rounded shadow max-w-md text-center space-y-4">
-                        <h2 className="text-2xl font-bold text-green-900">
-                            Enter Your Information
-                        </h2>
-                        <p className="text-sm text-gray-600">
-                            Note: Reading test duration is 1 hour.
-                        </p>
+                        <h2 className="text-2xl font-bold text-green-900">Enter Your Information</h2>
+                        <p className="text-sm text-gray-600">Note: Reading test duration is 1&nbsp;hour.</p>
+
                         <input
                             type="text"
                             placeholder="First Name"
@@ -1230,41 +1345,32 @@ export default function ReadingMock1() {
                         />
 
                         <button
-                            className="bg-green-600 text-white px-6 py-2 rounded disabled:opacity-40"
+                            className="bg-green-600 text-white px-6 py-2 rounded w-full disabled:opacity-40"
+                            disabled={!userInfo.firstName || !userInfo.lastName || !userInfo.phone}
                             onClick={() => {
-                                if (userInfo.firstName && userInfo.lastName && userInfo.phone) {
-                                    setShowUserForm(false);
-                                    setShowIntro(true);
-                                }
+                                setShowUserForm(false);
+                                setShowIntro(true);
                             }}
-                            disabled={
-                                !userInfo.firstName || !userInfo.lastName || !userInfo.phone
-                            }
                         >
-                            Submit
+                            Continue
                         </button>
                     </div>
                 </div>
             )}
 
-            {/* ───────────── Start Modal ───────────── */}
-            {showIntro && !showUserForm && (
-                <div
-                    data-testid="start-modal"
-                    className="fixed inset-0 bg-black/60 flex items-center justify-center z-50"
-                >
+            {/* ─────────────────── 3. START‑NOTIFICATION MODAL ─────────────────── */}
+            {showIntro && (
+                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
                     <div className="bg-white p-6 rounded shadow max-w-md text-center space-y-4">
                         <h2 className="text-2xl font-bold text-[#32CD32]">Reading Test</h2>
-                        <p>
-                            3 passages / 40 questions. Timer starts when you click{" "}
-                            <strong>Start</strong>.
-                        </p>
+                        <p>3 passages / 40 questions. Timer starts when you click <strong>Start</strong>.</p>
+
                         <button
+                            className="bg-[#32CD32] text-white px-6 py-2 rounded"
                             onClick={() => {
                                 setShowIntro(false);
                                 setRunning(true);
                             }}
-                            className="bg-[#32CD32] text-white px-6 py-2 rounded"
                         >
                             Start
                         </button>
@@ -1272,27 +1378,27 @@ export default function ReadingMock1() {
                 </div>
             )}
 
-            {/* ───────────── Result Modal ───────────── */}
+            {/* ─────────────────── 4. RESULT MODAL ─────────────────── */}
             {result && (
                 <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
                     <div className="bg-white p-6 rounded shadow max-w-md text-center space-y-4">
                         <h2 className="text-3xl font-bold text-[#32CD32]">Your Score</h2>
                         <p className="text-2xl font-semibold">{result.correct}/40 answers</p>
-                        <p className="text-xl">
-                            Band score <strong>{result.band}</strong>
-                        </p>
+                        <p className="text-xl">Band score <strong>{result.band}</strong></p>
+
                         <button
+                            className="bg-[#32CD32] text-white px-6 py-2 rounded"
                             onClick={() => {
                                 setResult(null);
                                 setTimeout(() => router.push("/"), 10_000);
                             }}
-                            className="bg-[#32CD32] text-white px-6 py-2 rounded"
                         >
                             Close
                         </button>
                     </div>
                 </div>
             )}
+
 
             {/* ───────────── Main Layout ───────────── */}
             {!showIntro && !showUserForm && (
@@ -1452,15 +1558,15 @@ export default function ReadingMock1() {
                     </main>
 
                     {/* paginator – fluid full‑width */}
-                    <footer className="fixed bottom-0 inset-x-0 bg-white border-t px-2 sm:px-4 py-2 z-40 shadow">
-                        <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {/* ───── paginator (compact boxes, label is always one line) ───── */}
+                    <footer className="fixed inset-x-0 bottom-0 bg-white border-t shadow z-20">
+                        <div className="flex gap-3 px-2 sm:px-4 py-1 overflow-x-auto">
                             {partOffsets.map((off, idx) => {
                                 const nextOff =
                                     idx + 1 < partOffsets.length ? partOffsets[idx + 1] : TOTAL;
-                                const answered = answers
-                                    .slice(off, nextOff)
-                                    .filter((a) => a.trim()).length;
+                                const answered = answers.slice(off, nextOff).filter((a) => a.trim()).length;
                                 const active = currentPart === idx;
+
                                 return (
                                     <div
                                         key={idx}
@@ -1468,20 +1574,23 @@ export default function ReadingMock1() {
                                             setCurrentPart(idx as 0 | 1 | 2);
                                             setCurrentIdx(off);
                                         }}
-                                        className={`border rounded p-2 cursor-pointer ${
-                                            active ? "border-green-400" : "border-gray-300"
-                                        }`}
+                                        className={`cursor-pointer transition-all duration-150 select-none
+            ${active
+                                            ? "flex-1 min-w-[280px] border border-green-400 rounded-lg px-3 py-2"
+                                            : "min-w-[160px] border border-gray-300 rounded-lg px-3 py-2"}`
+                                        }
                                     >
+                                        {/* single‑row label */}
                                         <div
-                                            className={`font-semibold ${
-                                                active ? "text-[#32CD32]" : ""
-                                            }`}
+                                            className={`whitespace-nowrap font-semibold leading-none
+              ${active ? "text-[#32CD32]" : ""}`}
                                         >
                                             Passage {idx + 1}: {answered} / {nextOff - off}
                                         </div>
 
+                                        {/* question circles only for active part */}
                                         {active && (
-                                            <div className="flex flex-wrap gap-1 mt-1">
+                                            <div className="mt-1 flex gap-0.5 overflow-x-auto">
                                                 {Array.from({ length: nextOff - off }).map((_, q) => {
                                                     const qi = off + q;
                                                     return (
@@ -1491,13 +1600,11 @@ export default function ReadingMock1() {
                                                                 e.stopPropagation();
                                                                 document
                                                                     .getElementById(`question-${qi}`)
-                                                                    ?.scrollIntoView({
-                                                                        behavior: "smooth",
-                                                                        block: "center",
-                                                                    });
+                                                                    ?.scrollIntoView({ behavior: "smooth", block: "center" });
                                                                 setCurrentIdx(qi);
                                                             }}
-                                                            className={`w-8 h-8 rounded-full border text-sm ${
+                                                            className={`w-6 h-6 rounded-full border text-xs leading-none
+                      ${
                                                                 currentIdx === qi
                                                                     ? "bg-[#32CD32] text-white"
                                                                     : answers[qi].trim()
@@ -1516,6 +1623,7 @@ export default function ReadingMock1() {
                             })}
                         </div>
                     </footer>
+
 
                     {/* popover actions */}
                     {showActions && (

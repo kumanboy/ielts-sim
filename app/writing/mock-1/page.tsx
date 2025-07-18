@@ -316,8 +316,8 @@ export default function WritingMock1() {
     const durationSec = (data.durationMinutes || 60) * 60;
 
     /* ---- user form ---- */
-    const [showUserForm, setShowUserForm] = useState(true);
-    const [showIntro, setShowIntro] = useState(false);
+
+
     const [userInfo, setUserInfo] = useState({ firstName: "", lastName: "", phone: "" });
 
     /* ---- timer ---- */
@@ -335,6 +335,16 @@ export default function WritingMock1() {
     /* ---- save indicator ---- */
     const [saveState, setSaveState] = useState<"idle" | "saving" | "saved">("idle");
     const saveTimerRef = useRef<number | null>(null);
+    /* ---- access flow ---- */
+    const [showCodeModal, setShowCodeModal] = useState(true);     // step 1: code
+    const [codeInput, setCodeInput]         = useState("");
+    const [codeErr,   setCodeErr]           = useState("");
+    const [showWrongModal, setShowWrongModal] = useState(false);  // wrong‑code dialog
+
+    /* ---- user form ---- */
+    const [showUserForm, setShowUserForm] = useState(false);      // step 2: form
+    const [showIntro,   setShowIntro]     = useState(false);      // step 3: start modal
+
     // --- refs for safe auto‑submit ---
     const hasSubmittedRef = useRef(false);
     const answersRef      = useRef<string[]>([]);
@@ -531,6 +541,80 @@ export default function WritingMock1() {
     /* ---- UI ---- */
     return (
         <section className="h-screen flex flex-col bg-white">
+            {/* ───────────── Code Modal ───────────── */}
+            {showCodeModal && (
+                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded shadow max-w-xs w-full text-center space-y-4">
+                        <h2 className="text-xl font-bold text-[#32CD32]">Enter Access Code</h2>
+
+                        <input
+                            type="text"
+                            maxLength={4}
+                            value={codeInput}
+                            onChange={(e) => setCodeInput(e.target.value.replace(/[^0-9]/g, ""))}
+                            className="w-full border p-2 rounded text-center tracking-widest text-2xl"
+                            placeholder="0000"
+                        />
+
+                        {codeErr && <p className="text-red-600 text-sm">{codeErr}</p>}
+
+                        <button
+                            className="bg-[#32CD32] text-white px-6 py-2 rounded w-full"
+                            onClick={async () => {
+                                const r = await fetch("/api/verify-code", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ code: codeInput }),
+                                });
+
+                                if (r.ok) {
+                                    setShowCodeModal(false);   // unlock form
+                                    setShowUserForm(true);
+                                    setCodeInput("");
+                                    setCodeErr("");
+                                } else {
+                                    setShowCodeModal(false);
+                                    setShowWrongModal(true);
+                                }
+                            }}
+                        >
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* ───────────── Wrong‑Code Modal ───────────── */}
+            {showWrongModal && (
+                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded shadow max-w-sm w-full text-center space-y-4">
+                        <h2 className="text-xl font-bold text-red-600">Incorrect Code</h2>
+                        <p>
+                            Please enter the correct code or&nbsp;
+                            <a
+                                href="https://t.me/ielts_school_admin"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="underline text-[#32CD32] font-semibold"
+                            >
+                                reach out to IELTS‑School administration
+                            </a>.
+                        </p>
+
+                        <button
+                            className="bg-[#32CD32] text-white px-6 py-2 rounded w-full"
+                            onClick={() => {
+                                setShowWrongModal(false);
+                                setShowCodeModal(true);
+                                setCodeInput("");
+                            }}
+                        >
+                            Try Again
+                        </button>
+                    </div>
+                </div>
+            )}
+
             {/* ───────────── User Form ───────────── */}
             {showUserForm && (
                 <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
@@ -630,7 +714,7 @@ export default function WritingMock1() {
             )}
 
             {/* ───────────── Main Layout ───────────── */}
-            {!showIntro && !showUserForm && !showSubmitModal && (
+            {!showIntro && !showUserForm && !showSubmitModal && !showCodeModal && !showWrongModal && (
                 <>
                     {/* header */}
                     <header className="sticky top-0 z-40 bg-white border-b px-4 py-2 flex justify-between items-center">
