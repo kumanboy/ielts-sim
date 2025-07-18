@@ -33,7 +33,8 @@ const BAND_TABLE = [
     {min: 30, max: 31, band: 7}, {min: 26, max: 29, band: 6.5},
     {min: 23, max: 25, band: 6}, {min: 18, max: 22, band: 5.5},
     {min: 16, max: 17, band: 5}, {min: 13, max: 15, band: 4.5},
-    {min: 11, max: 12, band: 4},
+    {min: 10, max: 12, band: 4}, {min: 8, max: 9, band: 3.5},
+    {min: 6, max: 7, band: 3},{min: 4, max: 5, band: 2.5},
 ];
 /* ──────────────────────────────────────────────────────────── */
 
@@ -71,6 +72,11 @@ export default function ListeningMock1() {
     /* refs */
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const noteIdRef = useRef(0);
+    const hasSubmittedRef = useRef(false);
+    const answersRef = useRef<string[]>([]);
+    const userInfoRef = useRef(userInfo);
+
+
     // Telegram bot
     const sendTelegramResult = async (
         firstName: string,
@@ -110,12 +116,13 @@ export default function ListeningMock1() {
         s.trim().toLowerCase().replace(/£|\$/g, "").replace(/\s+/g, " ");
     const evaluate = () => {
         let correct = 0;
-        answers.forEach((ans, idx) => {
+        answersRef.current.forEach((ans, idx) => {
             const key = ANSWER_KEY[idx + 1];
             if (key?.some((k) => normalise(k) === normalise(ans))) correct++;
         });
-        const band = BAND_TABLE.find((r) => correct >= r.min && correct <= r.max)?.band ?? 0;
-        return {correct, band};
+        const band =
+            BAND_TABLE.find((r) => correct >= r.min && correct <= r.max)?.band ?? 0;
+        return { correct, band };
     };
 
     /* ─── effects ─────────────────────────────────── */
@@ -125,13 +132,24 @@ export default function ListeningMock1() {
         }
     }, [volume, muted]);
 
+    useEffect(() => {
+        answersRef.current = answers;          // keep up‑to‑date snapshot
+    }, [answers]);
+
+    useEffect(() => {
+        answersRef.current  = answers;   // already added earlier
+        userInfoRef.current = userInfo;  // keeps latest form data
+    }, [answers, userInfo]);
+
     // timer
     useEffect(() => {
         const timer = setInterval(() => {
             setTimeLeft((prev) => {
                 if (prev <= 1) {
                     clearInterval(timer);
-                    setTimeExpired(true); // <-- mark expired
+                    setTimeExpired(true);
+
+                    if (!hasSubmittedRef.current) handleSubmit();   // now uses latest answers
                     return 0;
                 }
                 return prev - 1;
@@ -176,7 +194,7 @@ export default function ListeningMock1() {
     /* redirect 10 s after results modal is closed */
     useEffect(() => {
         if (submitted && !result) {
-            const t = setTimeout(() => router.push("/"), 10_000);
+            const t = setTimeout(() => router.push("/"), 100);
             return () => clearTimeout(t);
         }
     }, [submitted, result, router]);
@@ -187,15 +205,25 @@ export default function ListeningMock1() {
         setTimeout(() => audioRef.current?.play(), 80);
     };
     const handleSubmit = () => {
+        if (hasSubmittedRef.current) return;
+        hasSubmittedRef.current = true;
+
         const { correct, band } = evaluate();
         setResult({ correct, band });
         setSubmitted(true);
 
-        // Only call if form data is filled (assuming you collect them in state)
-        if (userInfo.firstName && userInfo.lastName && userInfo.phone) {
-            sendTelegramResult(userInfo.firstName, userInfo.lastName, userInfo.phone, correct, band);
+        audioRef.current?.pause();
+        if (audioRef.current) audioRef.current.currentTime = 0;
+
+
+        const { firstName, lastName, phone } = userInfoRef.current;
+        if (firstName && lastName && phone) {
+            sendTelegramResult(firstName, lastName, phone, correct, band);
         }
     };
+
+
+
 
 
     /* highlight / note helpers (unchanged logic) */

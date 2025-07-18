@@ -66,7 +66,10 @@ const BAND_TABLE = [
     { min: 18, max: 22, band: 5.5 },
     { min: 16, max: 17, band: 5 },
     { min: 13, max: 15, band: 4.5 },
-    { min: 11, max: 12, band: 4 },
+    { min: 10, max: 12, band: 4 },
+    {min: 8, max: 9, band: 3.5},
+    {min: 6, max: 7, band: 3},
+    {min: 4, max: 5, band: 2.5},
 ];
 
 /* ───────────────── Correct answer overrides (1‑40) ─────────────────
@@ -739,7 +742,6 @@ function Passage3Part({ part, answers, onAnswerChange }: Passage3PartProps) {
     const mcqLetter = (i: number) => String.fromCharCode(65 + i); // 0->A
 
     /* YES/NO/NOT GIVEN selects */
-    const ynOpts = ["", "YES", "NO", "NOT GIVEN"];
 
     /* Questions */
     const q27 = qMap.get(27)!;
@@ -754,13 +756,13 @@ function Passage3Part({ part, answers, onAnswerChange }: Passage3PartProps) {
 
     return (
         <div>
-            {/* ---------- Q27‑31 MCQ Selects ---------- */}
+            {/* ---------- Q27‑31 MCQ Radios ---------- */}
             <div className="mb-8">
                 <h2 className="text-xl font-semibold text-green-600">
                     Questions 27 – 31
                 </h2>
                 <p className="mt-2 text-sm text-gray-600 mb-4">
-                    Choose the correct letter, A, B, C or D.
+                    Choose the correct letter, A, B, C or D.
                 </p>
 
                 {[q27, q28, q29, q30, q31].map((q) => (
@@ -768,23 +770,29 @@ function Passage3Part({ part, answers, onAnswerChange }: Passage3PartProps) {
                         <p className="font-medium mb-1">
                             {q.number}. {q.question}
                         </p>
-                        <select
-                            value={answers[q.number - 1] || ""}
-                            onChange={(e) => setQAns(q.number, e.target.value)}
-                            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                        >
-                            <option value="" disabled>
-                                Select answer
-                            </option>
+
+                        {/* radio list A‑D */}
+                        <ul className="mt-1 space-y-1 pl-6 text-sm">
                             {(q.options || []).map((opt, i) => {
-                                const letter = mcqLetter(i);
+                                const letter = mcqLetter(i);            // A‑D
                                 return (
-                                    <option key={letter} value={letter}>
-                                        {letter}. {opt}
-                                    </option>
+                                    <li key={letter} className="flex items-start gap-2">
+                                        <label className="flex items-center gap-2 cursor-pointer select-none">
+                                            <input
+                                                type="radio"
+                                                name={`mcq-${q.number}`}
+                                                value={letter}
+                                                checked={answers[q.number - 1] === letter}
+                                                onChange={() => setQAns(q.number, letter)}
+                                            />
+                                            <span>
+                  <strong>{letter}.</strong> {opt}
+                </span>
+                                        </label>
+                                    </li>
                                 );
                             })}
-                        </select>
+                        </ul>
                     </div>
                 ))}
             </div>
@@ -826,7 +834,7 @@ function Passage3Part({ part, answers, onAnswerChange }: Passage3PartProps) {
                         id="p3-gap-0"
                         answer={gapLetters[0]}
                         word={wordLookup[gapLetters[0]]}
-                        onClear={() => onAnswerChange(P3_Q32_OFFSET + 0, "")}
+                        onClear={() => onAnswerChange(P3_Q32_OFFSET, "")}
                     />{" "}
                     <span className="text-gray-400 ml-1">(32)</span> from government
                     ministers together with{" "}
@@ -865,25 +873,19 @@ function Passage3Part({ part, answers, onAnswerChange }: Passage3PartProps) {
                 </p>
             </DndContext>
 
-            {/* ---------- Q37‑40 YES/NO/NOT GIVEN Selects ---------- */}
+            {/* ---------- Q37‑40 YES/NO/NOT‑GIVEN Radios ---------- */}
             <div className="mt-12">
-                <h2
-                    id={`question-${36}`} // anchor at first of this block
-                    className="font-semibold text-lg"
-                >
+                <h2 id={`question-${36}`} className="font-semibold text-lg">
                     Questions 37 – 40
                 </h2>
                 <p className="mb-4">
-                    Do the following statements agree with the claims of the writer in the
-                    text? In boxes 37 - 40 below, write
+                    Do the following statements agree with the claims of the writer in the text?
+                    In boxes 37 – 40 below, write
                 </p>
                 <ul className="mb-4 text-sm pl-6 list-disc space-y-1">
-                    <li>YES if the statement agrees with the claims of the writer</li>
-                    <li>NO if the statement contradicts the claims of the writer</li>
-                    <li>
-                        NOT GIVEN if it is impossible to say what the writer thinks about
-                        this
-                    </li>
+                    <li>YES if the statement agrees with the claims of the writer</li>
+                    <li>NO if the statement contradicts the claims of the writer</li>
+                    <li>NOT GIVEN if it is impossible to say what the writer thinks about this</li>
                 </ul>
 
                 {[q37, q38, q39, q40].map((q) => (
@@ -891,17 +893,13 @@ function Passage3Part({ part, answers, onAnswerChange }: Passage3PartProps) {
                         <p className="font-medium mb-1">
                             {q.number}. {q.question}
                         </p>
-                        <select
-                            value={answers[q.number - 1] || ""}
-                            onChange={(e) => setQAns(q.number, e.target.value)}
-                            className="w-full max-w-xs border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                        >
-                            {ynOpts.map((o) => (
-                                <option key={o} value={o} disabled={o === ""}>
-                                    {o === "" ? "Select" : o}
-                                </option>
-                            ))}
-                        </select>
+
+                        <TFNGAnswer
+                            name={`yn-${q.number}`}
+                            value={answers[q.number - 1]}
+                            onChange={(val) => setQAns(q.number, val)}
+                            labels={["YES", "NO", "NOT GIVEN"]}
+                        />
                     </div>
                 ))}
             </div>
@@ -964,6 +962,9 @@ export default function ReadingMock1() {
     const [noteDraft, setNoteDraft] = useState("");
     const savedRangeRef = useRef<Range | null>(null);
     const noteIdRef = useRef(0);
+    const hasSubmittedRef = useRef(false);
+    const answersRef = useRef<string[]>([]);
+    const userInfoRef = useRef(userInfo);
 
     /* ---- resizable split (md+) ---- */
     const [splitPct, setSplitPct] = useState<number>(50);
@@ -1017,20 +1018,28 @@ export default function ReadingMock1() {
     /* ---- timer ---- */
     useEffect(() => {
         if (!running) return;
+
         const timer = setInterval(() => {
             setTimeLeft((prev) => {
                 if (prev <= 1) {
                     clearInterval(timer);
                     setTimeExpired(true);
-                    if (!submitted) handleSubmit();
+
+                    if (!hasSubmittedRef.current) handleSubmit();  // auto‑submit once
                     return 0;
                 }
                 return prev - 1;
             });
         }, 1000);
+
         return () => clearInterval(timer);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [running]);
+
+    useEffect(() => {
+        answersRef.current = answers;
+        userInfoRef.current = userInfo;
+    }, [answers, userInfo]);
+
 
     /* ---- selection popover ---- */
     useEffect(() => {
@@ -1070,7 +1079,7 @@ export default function ReadingMock1() {
     /* ---- redirect after closing results ---- */
     useEffect(() => {
         if (submitted && !result) {
-            const t = setTimeout(() => router.push("/"), 10_000);
+            const t = setTimeout(() => router.push("/"), 100);
             return () => clearTimeout(t);
         }
     }, [submitted, result, router]);
@@ -1081,18 +1090,14 @@ export default function ReadingMock1() {
 
         passages.forEach((p) => {
             p.questions.forEach((q) => {
-                const given = answers[q.number - 1] ?? "";
-                // Use override if present; fall back to JSON key
+                const given = answersRef.current[q.number - 1] ?? "";
                 const actualRaw = CORRECT_ANS_OVERRIDES[q.number] ?? q.answer;
                 const actual = actualRaw ?? "";
 
                 const t = q.type.toUpperCase();
-
                 if (t.includes("TRUE_FALSE") || t.includes("YES_NO")) {
-                    // Canonical compare TRUE/FALSE/YES/NO/NOT GIVEN
                     if (canonTF(given) === canonTF(actual)) correct++;
                 } else {
-                    // Case/whitespace insensitive compare (letters, words, etc.)
                     if (norm(given) === norm(actual)) correct++;
                 }
             });
@@ -1103,21 +1108,21 @@ export default function ReadingMock1() {
         return { correct, band };
     };
 
+
     const handleSubmit = () => {
+        if (hasSubmittedRef.current) return;        // avoid duplicates
+        hasSubmittedRef.current = true;
+
         const { correct, band } = evaluate();
         setResult({ correct, band });
         setSubmitted(true);
 
-        if (userInfo.firstName && userInfo.lastName && userInfo.phone) {
-            sendTelegramResult(
-                userInfo.firstName,
-                userInfo.lastName,
-                userInfo.phone,
-                correct,
-                band
-            );
+        const { firstName, lastName, phone } = userInfoRef.current;
+        if (firstName && lastName && phone) {
+            sendTelegramResult(firstName, lastName, phone, correct, band);
         }
     };
+
 
     /* ---- note/highlight helpers ---- */
     const applyHighlight = () => {

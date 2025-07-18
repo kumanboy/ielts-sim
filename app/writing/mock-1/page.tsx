@@ -335,6 +335,11 @@ export default function WritingMock1() {
     /* ---- save indicator ---- */
     const [saveState, setSaveState] = useState<"idle" | "saving" | "saved">("idle");
     const saveTimerRef = useRef<number | null>(null);
+    // --- refs for safe auto‑submit ---
+    const hasSubmittedRef = useRef(false);
+    const answersRef      = useRef<string[]>([]);
+    const userInfoRef     = useRef(userInfo);
+
 
     const LOCAL_KEY = "writing-mock1-answers";
     const LOCAL_USER_KEY = "writing-mock1-user";
@@ -362,6 +367,11 @@ export default function WritingMock1() {
             /* ignore */
         }
     }, []);
+
+    useEffect(() => {
+        answersRef.current  = answers;
+        userInfoRef.current = userInfo;
+    }, [answers, userInfo]);
 
     /* Persist answers */
     const scheduleSave = useCallback((newAnswers: string[]) => {
@@ -392,20 +402,23 @@ export default function WritingMock1() {
     /* Timer tick */
     useEffect(() => {
         if (!running) return;
+
         const id = window.setInterval(() => {
             setTimeLeft((prev) => {
                 if (prev <= 1) {
                     window.clearInterval(id);
                     setTimeExpired(true);
-                    void handleSubmit(); // auto-submit
+
+                    if (!hasSubmittedRef.current) handleSubmit();   // auto‑submit once
                     return 0;
                 }
                 return prev - 1;
             });
         }, 1000);
+
         return () => window.clearInterval(id);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [running]);
+
 
     /* ---- resizable split (desktop) ---- */
     const [splitPct, setSplitPct] = useState<number>(50);
@@ -470,15 +483,19 @@ export default function WritingMock1() {
         }
     }, []);
 
-    const handleSubmit = useCallback(async () => {
-        if (submitted) return;
-        setSubmitted(true);
+    const handleSubmit = async () => {
+        if (hasSubmittedRef.current) return;
+        hasSubmittedRef.current = true;
 
-        const [t1, t2] = answers;
+        setSubmitted(true);               // <- 🔹 add this line
+
+        const [t1, t2] = answersRef.current;
+        const { firstName, lastName, phone } = userInfoRef.current;
+
         const payload = {
-            firstName: userInfo.firstName,
-            lastName: userInfo.lastName,
-            phone: userInfo.phone,
+            firstName,
+            lastName,
+            phone,
             task1Words: countWords(t1),
             task2Words: countWords(t2),
             task1Text: t1,
@@ -487,13 +504,13 @@ export default function WritingMock1() {
 
         await sendWritingToTelegram(payload);
 
-        // Clear persisted storage + in‑memory states so next attempt starts clean.
         clearPersisted();
         setAnswers(["", ""]);
         setUserInfo({ firstName: "", lastName: "", phone: "" });
-
         setShowSubmitModal(true);
-    }, [answers, clearPersisted, submitted, userInfo]);
+    };
+
+
 
     /* Confirm if under minimum */
     const trySubmit = () => {
@@ -602,7 +619,7 @@ export default function WritingMock1() {
                         <button
                             onClick={() => {
                                 setShowSubmitModal(false);
-                                setTimeout(() => router.push("/"), 10_000);
+                                setTimeout(() => router.push("/"), 100);
                             }}
                             className="bg-[#32CD32] text-white px-6 py-2 rounded"
                         >
