@@ -1,24 +1,23 @@
+// components/mock2/Part2ScienceFair.tsx
 "use client";
 
 import React from "react";
 import Image from "next/image";
 
 interface Props {
-    answers: string[]; // slice 10‑19
+    answers: string[];                 // slice 10‑19
     onAnswerChangeAction: (idx: number, v: string) => void;
 }
 
 const OptionLetters = ["A", "B", "C", "D", "E"];
 
-/* renders one line with five radios (A‑E) */
+/* one line with five radio buttons (A‑E) */
 const RadioRow = ({
                       q,
-                      idx,
                       value,
                       onChange,
                   }: {
     q: number;
-    idx: number; // local 0‑5
     value: string;
     onChange: (v: string) => void;
 }) => (
@@ -39,17 +38,19 @@ const RadioRow = ({
     </div>
 );
 
-export default function Part2ScienceFair({ answers, onAnswerChangeAction }: Props) {
-    const set = (localIdx: number, v: string) => onAnswerChangeAction(localIdx, v);
+export default function Part2ScienceFair({
+                                             answers,
+                                             onAnswerChangeAction,
+                                         }: Props) {
+    const set = (i: number, v: string) => onAnswerChangeAction(i, v);
 
-    const texts = {
-        ablockHeading:
-            "According to the speaker, what are the TWO reasons why the fair was first organised?",
-        bblockHeading:
-            "What TWO things do people often forget to include in their displays?",
-        cblockHeading:
-            "What are the TWO biggest growth areas at the fair?",
-    };
+    /* texts & options exactly as in the PDF */
+    const ablockHeading =
+        "According to the speaker, what are the TWO reasons why the fair was first organised?";
+    const bblockHeading =
+        "What TWO things do people often forget to include in their displays?";
+    const cblockHeading =
+        "What are the TWO biggest growth areas at the fair?";
 
     const optionSets: Record<string, string[]> = {
         ablock: [
@@ -79,9 +80,9 @@ export default function Part2ScienceFair({ answers, onAnswerChangeAction }: Prop
         <div className="space-y-10">
             {/* 11‑12 */}
             <section>
-                <p className="italic mb-1">{texts.ablockHeading}</p>
+                <p className="italic mb-1">{ablockHeading}</p>
                 <p className="mb-2">
-                    Choose TWO answers and write the correct letters A–E in boxes&nbsp;11 and&nbsp;12 on your answer sheet.
+                    Choose TWO answers and write the correct letters A–E in boxes 11 and 12 on your answer sheet.
                 </p>
                 <ul className="ml-6 list-none mb-3 space-y-0.5">
                     {optionSets.ablock.map((t, i) => (
@@ -90,22 +91,21 @@ export default function Part2ScienceFair({ answers, onAnswerChangeAction }: Prop
                         </li>
                     ))}
                 </ul>
-                {[{ q: 11, local: 0 }, { q: 12, local: 1 }].map(({ q, local }) => (
+                {[11, 12].map((q, i) => (
                     <RadioRow
                         key={q}
                         q={q}
-                        idx={local}
-                        value={answers[local] || ""}
-                        onChange={(v) => set(local, v)}
+                        value={answers[i] || ""}
+                        onChange={(v) => set(i, v)}
                     />
                 ))}
             </section>
 
             {/* 13‑14 */}
             <section>
-                <p className="italic mb-1">{texts.bblockHeading}</p>
+                <p className="italic mb-1">{bblockHeading}</p>
                 <p className="mb-2">
-                    Choose TWO answers and write the correct letters A–E in boxes&nbsp;13 and&nbsp;14 on your answer sheet.
+                    Choose TWO answers and write the correct letters A–E in boxes 13 and 14 on your answer sheet.
                 </p>
                 <ul className="ml-6 list-none mb-3 space-y-0.5">
                     {optionSets.bblock.map((t, i) => (
@@ -114,22 +114,21 @@ export default function Part2ScienceFair({ answers, onAnswerChangeAction }: Prop
                         </li>
                     ))}
                 </ul>
-                {[{ q: 13, local: 2 }, { q: 14, local: 3 }].map(({ q, local }) => (
+                {[13, 14].map((q, i) => (
                     <RadioRow
                         key={q}
                         q={q}
-                        idx={local}
-                        value={answers[local] || ""}
-                        onChange={(v) => set(local, v)}
+                        value={answers[i + 2] || ""}
+                        onChange={(v) => set(i + 2, v)}
                     />
                 ))}
             </section>
 
             {/* 15‑16 */}
             <section>
-                <p className="italic mb-1">{texts.cblockHeading}</p>
+                <p className="italic mb-1">{cblockHeading}</p>
                 <p className="mb-2">
-                    Choose TWO answers and write the correct letters A–E in boxes&nbsp;15 and&nbsp;16 on your answer sheet.
+                    Choose TWO answers and write the correct letters A–E in boxes 15 and 16 on your answer sheet.
                 </p>
                 <ul className="ml-6 list-none mb-3 space-y-0.5">
                     {optionSets.cblock.map((t, i) => (
@@ -138,23 +137,34 @@ export default function Part2ScienceFair({ answers, onAnswerChangeAction }: Prop
                         </li>
                     ))}
                 </ul>
-                {[{ q: 15, local: 4 }, { q: 16, local: 5 }].map(({ q, local }) => (
+                {[15, 16].map((q, i) => (
                     <RadioRow
                         key={q}
                         q={q}
-                        idx={local}
-                        value={answers[local] || ""}
-                        onChange={(v) => set(local, v)}
+                        value={answers[i + 4] || ""}
+                        onChange={(v) => set(i + 4, v)}
                     />
                 ))}
             </section>
 
-            {/* 17‑20 map unchanged */}
+            {/* 17‑20 map + dropdowns */}
             <section className="pt-2 space-y-4">
                 <p className="font-medium">Questions 17‑20 – Label the plan (letters A‑I)</p>
-                <Image src="/map2.png" alt="Exhibition hall plan" width={500} height={200} className="border" />
 
-                {[{ q: 17, label: "Registration", i: 6 }, { q: 18, label: "Gaming zone", i: 7 }, { q: 19, label: "Commercial displays", i: 8 }, { q: 20, label: "Video room", i: 9 }].map(({ q, label, i }) => (
+                <Image
+                    src="/map2.png"
+                    alt="Exhibition hall plan"
+                    width={500}
+                    height={200}
+                    className="border"
+                />
+
+                {[
+                    { q: 17, label: "Registration", i: 6 },
+                    { q: 18, label: "Gaming zone", i: 7 },
+                    { q: 19, label: "Commercial displays", i: 8 },
+                    { q: 20, label: "Video room", i: 9 },
+                ].map(({ q, label, i }) => (
                     <div key={q} id={`question-${q}`} className="flex items-center gap-2">
                         <span className="w-6 font-semibold">{q}.</span>
                         <span className="flex-1 min-w-[180px]">{label}</span>
