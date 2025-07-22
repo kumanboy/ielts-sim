@@ -155,13 +155,22 @@ const TELEGRAM_CHAT_ID = "-4811826093"; // group or personal id
 
 const TG_API = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
 
+
 // Helper: send one message (optionally with Markdown)
 async function tgSend(text: string, parseMode?: "Markdown") {
-    await axios.post(`${TG_API}/sendMessage`, {
-        chat_id: TELEGRAM_CHAT_ID,
-        text,
-        ...(parseMode ? { parse_mode: parseMode } : {}),
+    const res = await fetch(`${TG_API}/sendMessage`, {
+        method : "POST",
+        headers: { "Content-Type": "application/json" },
+        body   : JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text, parse_mode: parseMode })
     });
+
+    if (!res.ok) {                     // surface API errors for easier debugging
+        console.error(
+            "Telegram error",
+            res.status,
+            await res.text().catch(() => "<no‑body>")
+        );
+    }
 }
 
 /** Telegram allows max 4096 chars per message. We split long text safely. */

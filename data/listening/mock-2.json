@@ -1,0 +1,428 @@
+{
+  "title": "Academic Listening Mock Test 2",
+  "audio": "/audio/listening/mock-2.mp3",
+  "durationMinutes": 30,
+  "parts": [
+    {
+      "part": 1,
+      "title": "Section 1",
+      "questions": [
+        {
+          "number": 1,
+          "type": "GAP_FILL",
+          "prompt": "Present address: Flat A, 37, ____ House",
+          "answer": "Park"
+        },
+        {
+          "number": 2,
+          "type": "GAP_FILL",
+          "prompt": "Current occupation: ____",
+          "answer": "Gardener"
+        },
+        {
+          "number": 3,
+          "type": "GAP_FILL",
+          "prompt": "Special needs: Partially ____",
+          "answer": "Deaf"
+        },
+        {
+          "number": 4,
+          "type": "GAP_FILL",
+          "prompt": "A stay in ____ (June, one day)",
+          "answer": "Hospital"
+        },
+        {
+          "number": 5,
+          "type": "GAP_FILL",
+          "prompt": "Injury: a ____",
+          "answer": "Broken arm"
+        },
+        {
+          "number": 6,
+          "type": "GAP_FILL",
+          "prompt": "Bring in: a ____ (recent)",
+          "answer": "Photo"
+        },
+        {
+          "number": 7,
+          "type": "GAP_FILL",
+          "prompt": "Bring in: one ____ (e.g. water)",
+          "answer": "Bill"
+        },
+        {
+          "number": 8,
+          "type": "MCQ_SINGLE",
+          "prompt": "When will Alan have his clinic appointment?",
+          "answer": "Wednesday",
+          "options": [
+            "Tuesday",
+            "Wednesday",
+            "Thursday"
+          ]
+        },
+        {
+          "number": 9,
+          "type": "MCQ_SINGLE",
+          "prompt": "What transport does Alan decide to use to get to the clinic?",
+          "answer": "Bus",
+          "options": [
+            "Own car",
+            "Bus",
+            "Taxi"
+          ]
+        },
+        {
+          "number": 10,
+          "type": "MCQ_SINGLE",
+          "prompt": "Alan found out about the clinic from",
+          "answer": "the Internet",
+          "options": [
+            "the Internet",
+            "a list in the library",
+            "a colleague"
+          ]
+        }
+      ]
+    },
+    {
+      "part": 2,
+      "title": "Section 2",
+      "questions": [
+        {
+          "number": 11,
+          "type": "MCQ_MULTI_TWO",
+          "prompt": "Reasons fair first organised: choose two",
+          "options": [
+            "Science well taught",
+            "Factory sponsorship",
+            "Exam performance needed improvement",
+            "Another fair stopped",
+            "Good site became available"
+          ],
+          "answer": [
+            "C",
+            "E"
+          ]
+        },
+        {
+          "number": 13,
+          "type": "MCQ_MULTI_TWO",
+          "prompt": "Things people forget in displays: choose two",
+          "options": [
+            "Procedures followed",
+            "Materials used",
+            "Summary of project",
+            "Conclusions drawn",
+            "Photos of work in progress"
+          ],
+          "answer": [
+            "A",
+            "D"
+          ]
+        },
+        {
+          "number": 15,
+          "type": "MCQ_MULTI_TWO",
+          "prompt": "Biggest growth areas at the fair: choose two",
+          "options": [
+            "Interactive displays",
+            "Pre‑school projects",
+            "Energy conservation projects",
+            "Number of people attending",
+            "Cutting‑edge research projects"
+          ],
+          "answer": [
+            "B",
+            "E"
+          ]
+        },
+        {
+          "number": 17,
+          "type": "MAP_LABEL",
+          "prompt": "Exhibition hall plan: Registration",
+          "options": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I"
+          ],
+          "answer": "I"
+        },
+        {
+          "number": 18,
+          "type": "MAP_LABEL",
+          "prompt": "Exhibition hall plan: Gaming zone",
+          "options": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I"
+          ],
+          "answer": "E"
+        },
+        {
+          "number": 19,
+          "type": "MAP_LABEL",
+          "prompt": "Exhibition hall plan: Commercial displays",
+          "options": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I"
+          ],
+          "answer": "D"
+        },
+        {
+          "number": 20,
+          "type": "MAP_LABEL",
+          "prompt": "Exhibition hall plan: Video room",
+          "options": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I"
+          ],
+          "answer": "B"
+        }
+      ]
+    },
+    {
+      "part": 3,
+      "title": "Section 3",
+      "questions": [
+        {
+          "number": 21,
+          "type": "MCQ_SINGLE",
+          "prompt": "Tom and Ruby choose 'nice' because",
+          "options": [
+            "many usages",
+            "well known",
+            "meaning changed"
+          ],
+          "answer": "meaning changed"
+        },
+        {
+          "number": 22,
+          "type": "MCQ_SINGLE",
+          "prompt": "What inspired their research?",
+          "options": [
+            "Thinking about novel",
+            "Talking to classmates",
+            "Interesting lecture"
+          ],
+          "answer": "Thinking about novel"
+        },
+        {
+          "number": 23,
+          "type": "MCQ_SINGLE",
+          "prompt": "Resource to add to presentation?",
+          "options": [
+            "Interview data",
+            "Computer software",
+            "Journal articles"
+          ],
+          "answer": "Computer software"
+        },
+        {
+          "number": 24,
+          "type": "MCQ_SINGLE",
+          "prompt": "Ruby most worried about reading",
+          "options": [
+            "Its relevance",
+            "Overlap with modules",
+            "Date of references"
+          ],
+          "answer": "Overlap with modules"
+        },
+        {
+          "number": 25,
+          "type": "MATCH_PAIR",
+          "prompt": "Title",
+          "options": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I"
+          ],
+          "answer": "G"
+        },
+        {
+          "number": 26,
+          "type": "MATCH_PAIR",
+          "prompt": "Introduction",
+          "options": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I"
+          ],
+          "answer": "A"
+        },
+        {
+          "number": 27,
+          "type": "MATCH_PAIR",
+          "prompt": "Historical background",
+          "options": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I"
+          ],
+          "answer": "C"
+        },
+        {
+          "number": 28,
+          "type": "MATCH_PAIR",
+          "prompt": "Current usage",
+          "options": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I"
+          ],
+          "answer": "H"
+        },
+        {
+          "number": 29,
+          "type": "MATCH_PAIR",
+          "prompt": "Additional meanings",
+          "options": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I"
+          ],
+          "answer": "F"
+        },
+        {
+          "number": 30,
+          "type": "MATCH_PAIR",
+          "prompt": "Future directions",
+          "options": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I"
+          ],
+          "answer": "D"
+        }
+      ]
+    },
+    {
+      "part": 4,
+      "title": "Section 4",
+      "questions": [
+        {
+          "number": 31,
+          "type": "GAP_FILL",
+          "prompt": "Economically ____ are often unreliable in the short term",
+          "answer": "Returns"
+        },
+        {
+          "number": 32,
+          "type": "GAP_FILL",
+          "prompt": "Jobs of significant ____ in rural economies",
+          "answer": "Impact"
+        },
+        {
+          "number": 33,
+          "type": "GAP_FILL",
+          "prompt": "Forests play role in absorbing ____ such as CO2",
+          "answer": "Pollutants"
+        },
+        {
+          "number": 34,
+          "type": "GAP_FILL",
+          "prompt": "Report offered excellent ____ of recent study",
+          "answer": "Summary"
+        },
+        {
+          "number": 35,
+          "type": "GAP_FILL",
+          "prompt": "Trend hinders process of controlling ____ of pests and diseases",
+          "answer": "Spread"
+        },
+        {
+          "number": 36,
+          "type": "GAP_FILL",
+          "prompt": "Investigate how tree species have become ____",
+          "answer": "Infected"
+        },
+        {
+          "number": 37,
+          "type": "GAP_FILL",
+          "prompt": "Import logs + ____ of adult beetles",
+          "answer": "Flight"
+        },
+        {
+          "number": 38,
+          "type": "GAP_FILL",
+          "prompt": "Influence of changes in ____",
+          "answer": "Climate"
+        },
+        {
+          "number": 39,
+          "type": "GAP_FILL",
+          "prompt": "Import live saplings for ____ e.g. in gardens",
+          "answer": "Planting"
+        },
+        {
+          "number": 40,
+          "type": "GAP_FILL",
+          "prompt": "Best methods of ____ movement",
+          "answer": "Monitoring"
+        }
+      ]
+    }
+  ]
+}
