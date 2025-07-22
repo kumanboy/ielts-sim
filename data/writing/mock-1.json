@@ -6,11 +6,11 @@
     "minWords": 150,
     "instructions": [
       "You should spend about 20 minutes on this task.",
-      "The Pie chart gives information about the country of birth of people living in Australia and the table shows where people born in these countries live.",
+      "The Pie charts below show the online shopping sales for retail sectors in New Zealand in 2003 and 2013. information about the country of birth of people living in Australia and the table shows where people born in these countries live.",
       "Summarise the information by selecting and reporting the main features and make comparisons where relevant.",
       "You should write at least 150 words."
     ],
-    "image": "/graph.png",
+    "image": "/diagram.jpg",
     "pie": {
       "title": "Country of birth of people living in Australia",
       "series": [
@@ -40,7 +40,7 @@
     "minWords": 250,
     "instructions": [
       "You should spend about 40 minutes on this task.",
-      "People are having more and more sugar-based drinks. What are the reasons? What are the solutions to make people drink less.",
+      "Some people think that the social media is improving people’s lives.\n\n To what extent do you agree or disagree with this view?",
       "You should write at least 250 words."
     ],
     "questionType": "causes_solutions"
