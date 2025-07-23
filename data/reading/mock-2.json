@@ -1,0 +1,286 @@
+{
+  "reading": [
+    {
+      "durationMinutes": 60,
+      "passages": [
+        {
+          "title": "Child language development: the early years",
+          "passage": "Research shows that children don’t learn their native language like little robots who can only notice and copy what they hear. For example, from the first moments of life babies begin to make sounds: they cry, coo and chatter. Although they make sounds that sound very much like words, these sounds have no conventional meaning. This is shown by the fact that deaf babies, who can’t hear what others are saying, chatter in the same way.\n\nChildren already begin to recognize what their caregivers are saying at an early age. For example, some six‑month‑olds will regularly glance up at the ceiling light in response to their mother saying “light”. Actual talking begins sometime between about ten and twenty months of age. Almost invariably, children’s first utterances are one word long. Some first words refer to simple interactions with adults, such as “hi” and “peekaboo”. Others are names, such as “Mama” and “Fido”. Most of the rest are simple nouns, such as “duck” and “spoon”, adjectives such as “hot” and “big”, and action verbs such as “give” and “push”. And one of the first words is almost always an emphatic “No”.\n\nThe early vocabulary tends to concern things that can be moved around, or that move by themselves in the child’s environment. For example, children are less likely to talk about ceilings than about rolling balls. And this early vocabulary refers more often to attributes and actions children can perceive in the outside world, such as shape or movement, than to internal states and feelings, such as pain or ideas.\n\nIt is hard to understand what children mean by the words they say. Even though we hear them say “rabbit” or “ball”, we don’t know exactly what these mean to their young users. For example, if a young child says “rabbit” when he sees a rabbit, he may mean “tail”, or “animal”, or “white”, or even “runs by”.\n\nThe same problem that makes it hard for investigators to find out exactly what children mean probably makes it hard for children themselves to discover these meanings. Even if the helpful mother points out a rabbit to her child, saying “rabbit”, the child still has a big job to do. He has to make up his mind whether the word “rabbit” means a particular animal (in which case “rabbit” is a name, like “Peter Rabbit”), anything that falls within the animal kingdom (in which case “rabbit” means “animal”), anything within a particular species (so “rabbit” means “rabbit”), or even some property, part, or action of a rabbit (in which case “rabbit” means “white”, or “tail”, or “hops”). Because of problems like these, beginners often under‑generalize the meaning of a word. They may know that the word “house” refers to small toy buildings, but not that it also refers to large real buildings. They may also over‑generalize the meaning of other words. They may think that the word “Daddy” refers to any man, not just their own father.\n\nThese over‑generalizations and under‑generalizations are common for the first seventy‑five or so words the child utters, but very rare after that. At later stages of learning, the child is almost exactly on the mark in using words to refer to the right thing in the world. However, it is important to realize that even the young over‑generalizer is surprisingly correct in what he has learned. Though he just about always observes the ground when he sees a rabbit (and hears the word “rabbit”), because rabbits can’t fly and so are nearly always found near the ground, still he virtually never mistakenly learns that “rabbit” means “ground”, or that “ground” means “rabbit”. He just makes the category a bit too broad or narrow at first.\n\nAt about the child’s second birthday many drastic changes take place. The child’s vocabulary begins to increase rapidly, rising to many hundreds of words. Soon he begins to put words together into “sentences”. Although we can clearly recognize ideas in these first sentences, they hardly sound like adult speech. Generally, each one is only two words long, and each of these words is a content word. The function words and morphemes (word parts) are still largely missing, and so these sentences sound like the short ones we use in text messages: “Throw ball!”, “Daddy shoe”, or “No eat!”. However, despite their simplicity they show evidence of organization. For example, young English speakers will put the doer of the action first, and will say “Mummy throw” if they want the mother to throw the ball. In fact, these short sentences are so clear in meaning that one may wonder why children bother to learn anything more.",
+          "questions": [
+            { "number": 1,  "type": "TFNG",             "question": "Children as young as six months may demonstrate understanding of certain words.",                    "answer": "TRUE" },
+            { "number": 2,  "type": "TFNG",             "question": "The ability to understand meanings precedes the ability to express meanings.",                     "answer": "TRUE" },
+            { "number": 3,  "type": "TFNG",             "question": "The development of speech in a child under one year of age is an indication of above‑average intelligence.", "answer": "NOT GIVEN" },
+            { "number": 4,  "type": "TFNG",             "question": "Young children talk about fixed objects more often than moving objects.",                           "answer": "FALSE" },
+            { "number": 5,  "type": "TFNG",             "question": "If young children hurt themselves, they usually try to talk about it.",                            "answer": "FALSE" },
+            { "number": 6,  "type": "TFNG",             "question": "When young children say a word, they may be using it in an unusual sense.",                         "answer": "TRUE" },
+            { "number": 7,  "type": "TFNG",             "question": "Parents can ensure that children understand a word correctly, by pointing as they say it.",       "answer": "FALSE" },
+            {
+              "number": 8,
+              "type": "SENTENCE_ENDINGS",
+              "question": "The fact that babies utter meaningless words …",
+              "options": {
+                "A": "children start reacting to names",
+                "B": "is proved by the same sounds produced by impaired babies",
+                "C": "the same word may have different semantic values for them",
+                "D": "is related to mobile objects rather than static",
+                "E": "first signs of genuine speech may occur",
+                "F": "child has no problem forming connotations for a word",
+                "G": "they need to process information without any reference to what they see",
+                "H": "they start forming more complex patterns of speech",
+                "I": "they still have to decide on meaning of the word among a range of associations",
+                "J": "babies usually use a wide range of words with no difficulty"
+              },
+              "answer": "B"
+            },
+            { "number": 9,  "type": "SENTENCE_ENDINGS", "question": "When a baby is almost a year old …",                                           "options": "see 8", "answer": "E" },
+            { "number": 10, "type": "SENTENCE_ENDINGS", "question": "Initial base of words a child acquires …",                                    "options": "see 8", "answer": "D" },
+            { "number": 11, "type": "SENTENCE_ENDINGS", "question": "A child and an adult may find it difficult to establish mutual understanding because …", "options": "see 8", "answer": "C" },
+            { "number": 12, "type": "SENTENCE_ENDINGS", "question": "When a baby is presented a word with visual stimulus …",                      "options": "see 8", "answer": "I" },
+            { "number": 13, "type": "SENTENCE_ENDINGS", "question": "When a child is approximately two years old …",                               "options": "see 8", "answer": "H" }
+          ]
+        },
+        {
+          "title": "The design of a new cooking stove",
+          "passageSections": [
+            {
+              "label": "A",
+              "text": "Cooking on charcoal is costly and damages health and forests, yet charcoal is a major cooking fuel in many countries, particularly in urban areas. In East Africa, 4.5 million urban households regularly cook on it, and that number is growing. Many attempts have been made to reduce the impacts of charcoal use by improving the efficiency of cooking stoves. One successful example is the Kenya Ceramic Jiko (jiko means stove in Swahili), or KCJ, which was developed in the 1980s. It cut charcoal use by adding an insulating ceramic liner to the traditional metal jiko. However, most companies developing higher‑efficiency stoves rely on precision manufacture in China, and this means that jobs are exported, and transport adds to the cost of a stove. In 2011, a company called BURN Manufacturing took on the challenge of designing a much cleaner and more efficient charcoal stove, and manufacturing it in Kenya. The resulting product, the jikokoa, was launched commercially in 2013."
+            },
+            {
+              "label": "B",
+              "text": "The jikokoa is designed for household use, and can cook a single pot of food up to 12 litres in size – the sort of quantity needed for a family of eight to ten people. It is similar in external size to the KCJ, because this is what users wanted. User opinions also led to the smart external finish in silver and black. Inside, the jikokoa is different to the KCJ. The combustion chamber (where the charcoal burns) is much smaller, and is made of a metal alloy which can cope with high temperatures, rather than ceramic. There is an ash tray underneath the grate where the charcoal sits. Not only does this provide a clean way to collect ash, it can also be moved in and out to light the charcoal from underneath. In addition, it allows accurate control of the air flow and thus the rate of burning. Around the combustion chamber and underneath the ash tray is a thick layer of ceramic wool insulation to cut heat loss. All parts are made to strict specifications, and components fit tightly to minimise air leakage."
+            },
+            {
+              "label": "C",
+              "text": "BURN’s stoves are made in a modern, continuous‑flow manufacturing facility that is capable of assembling one stove per minute. In this factory, all stove components are first fabricated from raw materials. Four sub‑assembly lines then combine these components into different sections (stove top, base, combustion chamber and outer casing). The final assembly line combines these four sections together and fits the insulation around the combustion chamber. To achieve high standards, incentive payments to assembly‑line teams are based not just on quantity of production, but also on quality, safety and tidiness."
+            },
+            {
+              "label": "D",
+              "text": "High‑specification materials and manufacture obviously carry a price tag: the current model of the jikokoa retails at KSh 3,800 (US$40) compared to around KSh 1,000 (US$11) for a similar‑sized KCJ. However, despite savings made on charcoal use, the initial cost of the stove puts it out of reach for many low‑income households. BURN is therefore actively growing a network of partners who can provide loans repayable in instalments. These now represent over one third of sales. The jikokoa is also sold through conventional channels, including all four large supermarket chains in Kenya and a wide range of smaller shops."
+            },
+            {
+              "label": "E",
+              "text": "BURN currently employs 87 people in Kenya, and aims to be an exemplary employer. All employees are salaried, and thus get paid annual leave, sick leave and maternity pay. Women account for 53 % of the workforce, and are in all types of job and at all levels, representing 46 % of those employed in production and 65 % of those in administration, sales and management. This gender equality has been achieved through fair and consistent employment practice, rather than quotas or positive discrimination."
+            },
+            {
+              "label": "F",
+              "text": "Compared to the KCJ, the jikokoa lights more easily and can cook faster, because the charcoal burns at a high temperature. In addition, the cooking rate can be controlled using the ash tray. It also looks good and is easy to carry around. Independent testing found that the jikokoa used 45 % less charcoal than the KCJ, which translates into significant financial savings for a household, typically nearly US$200 per year. Equally important is the reduction in health‑damaging fumes. Cutting charcoal use helps reduce deforestation in Kenya. The 62,000 jikokoa stoves currently in use are saving around 160,000 tonnes of wood each year and also cut greenhouse‑gas emissions."
+            },
+            {
+              "label": "G",
+              "text": "BURN Manufacturing aims to scale‑up sales rapidly in Kenya, in particular through the different microfinance routes which are making jikokoas increasingly affordable to low‑income households. Pilot sales in Tanzania went well, and marked the start of expansion throughout East Africa in 2015. New jikokoa models have been designed, such as a larger version for restaurants. The Nairobi factory has space for expanded production to meet growing demand. It is also expanding its research capacity to localise and speed up the development of new stoves."
+            }
+          ],
+          "questions": [
+
+            {
+              "number": 14,
+              "type": "HEADINGS",
+              "question": "Section A",
+              "options": {
+                "i": "Desirable job opportunities",
+                "ii": "Design of the jikokoa",
+                "iii": "The impact of rising charcoal prices",
+                "iv": "Benefits for the individual and the environment",
+                "v": "The background to stove innovations",
+                "vi": "Manufacture of the jikokoa",
+                "vii": "Training courses for BURN staff",
+                "viii": "Company plans",
+                "ix": "Affordability and availability"
+              },
+              "answer": "v"
+            },
+            { "number": 15, "type": "HEADINGS", "question": "Section B", "options": "see 14", "answer": "ii" },
+            { "number": 16, "type": "HEADINGS", "question": "Section C", "options": "see 14", "answer": "vi" },
+            { "number": 17, "type": "HEADINGS", "question": "Section D", "options": "see 14", "answer": "ix" },
+            { "number": 18, "type": "HEADINGS", "question": "Section E", "options": "see 14", "answer": "i" },
+            { "number": 19, "type": "HEADINGS", "question": "Section F", "options": "see 14", "answer": "iv" },
+            { "number": 20, "type": "HEADINGS", "question": "Section G", "options": "see 14", "answer": "viii" },
+
+
+            {
+              "number": 21,
+              "type": "MULTIPLE_SELECT",
+              "question": "Which TWO of the following claims are made about the jikokoa, compared to the KCJ?",
+              "options": {
+                "A": "It’s smaller in overall size.",
+                "B": "It’s easier to control.",
+                "C": "It uses more fuel.",
+                "D": "It’s less expensive to buy.",
+                "E": "It gives off fewer fumes."
+              },
+              "answer": ["B", "E"]
+            },
+            {
+              "number": 22,
+              "type": "MULTIPLE_SELECT",
+              "question": "Second answer for the same prompt (Q 21).",
+              "options": "see 21",
+              "answer": ["B", "E"]
+            },
+
+            {
+              "number": 23,
+              "type": "MULTIPLE_SELECT",
+              "question": "Which TWO of the following statements about the jikokoa are true?",
+              "options": {
+                "A": "It is made in China.",
+                "B": "It can be produced very efficiently.",
+                "C": "It can be bought on credit.",
+                "D": "It comes in a range of colours.",
+                "E": "It is difficult to move."
+              },
+              "answer": ["B", "C"]
+            },
+            {
+              "number": 24,
+              "type": "MULTIPLE_SELECT",
+              "question": "Second answer for the same prompt (Q 23).",
+              "options": "see 23",
+              "answer": ["B", "C"]
+            },
+
+
+            {
+              "number": 25,
+              "type": "DIAGRAM_LABEL",
+              "question": "Label the diagram of the jikokoa – box 25 (NO MORE THAN TWO WORDS).",
+              "image": "/public/jikokoa.png",
+              "answer": "Combustion chamber"
+            },
+            {
+              "number": 26,
+              "type": "DIAGRAM_LABEL",
+              "question": "Label the diagram of the jikokoa – box 26 (NO MORE THAN TWO WORDS).",
+              "image": "/public/jikokoa.png",
+              "answer": "Ash tray"
+            }
+          ]
+        },
+        {
+          "title": "The Measurement of Time",
+          "passageSections": [
+            { "label": "P1", "text": "The Industrial Revolution of the 18th and 19th centuries opened the way to a series of changes in daily life and human mentality. One example among many is the replacement of the rhythms of traditional agriculture with the uniform and precise schedule of industry." },
+            { "label": "P2", "text": "Traditional agriculture depended on cycles of natural time and organic growth. Most societies were unable to make precise time measurements, nor were they very interested in doing so. Life went on without clocks and timetables, subject only to the movements of the sun and the growth cycle of plants. There was no uniform working day, and all routines changed drastically from season to season. People knew where the sun was, and watched anxiously for signs of the rainy season and harvest time, but they did not know the hour, and hardly cared about which year it was." },
+            { "label": "P3", "text": "In contrast to medieval peasants and craftsmen, modern industry cares little about the sun or the season; it values precision and uniformity. For example, in a medieval workshop each shoemaker made an entire shoe, from sole to buckle. If one shoemaker was late for work, it did not hinder the others. However, in a modern, footwear‑factory assembly line, every worker mans a machine that produces just a small part of a shoe, which is then passed on to the next machine. If the worker who operates one of the machines has overslept, it hinders all the other machines. In order to prevent such calamities, everybody must adhere to a precise timetable. Each worker arrives at work at exactly the same time, and everybody takes their lunch break together, whether they are hungry or not. Everybody goes home when a whistle announces that the shift is over – not when they have finished their project." },
+            { "label": "P4", "text": "The Industrial Revolution turned the timetable and the assembly line into a template for almost all human activities. Shortly after factories imposed their time frames on human behaviour, schools too adopted precise timetables, followed by hospitals, government offices and grocery stores. Even in places devoid of assembly lines, the timetable became king." },
+            { "label": "P5", "text": "A crucial link in the spreading timetable was public transportation. If workers needed to start their shifts by 08.00, the train or bus had to reach the factory gate by 07.55; a few minutes’ delay would lower production and perhaps even lead to the lay‑offs of the unfortunate latecomers. In 1784, a carriage service with a published schedule began operating in Britain, but its timetable specified only the hour of departure, not arrival. Back then, each British city and town had its own local time, which could differ from London time by up to half an hour. When it was 12.00 in London, it was perhaps 12.20 in Liverpool, and 11.50 in Canterbury. Since there were no telephones, no radio or television, who could know, and who cared?" },
+            { "label": "P6", "text": "The first commercial train service began operating between Liverpool and Manchester in 1830, and ten years later the first train timetable was issued. The trains were much faster than the old carriages, so the differences in local hours became a severe nuisance. Eventually, in 1847, British train companies agreed that all train timetables would be linked to the time at the Greenwich Observatory in London. More and more institutions followed the lead of the train companies. Finally, in 1880, the British government legislated that all timetables in Britain must follow Greenwich. For the first time in history, a country adopted a national time and obliged its population to live according to one artificial clock rather than local ones or sunrise‑to‑sunset cycles." },
+            { "label": "P7", "text": "This modest beginning gave rise to a global network of timetables, synchronised down to the tiniest fraction of a second. When broadcast media – first radio, then television – appeared, they entered a world of timetables and became enthusiastic enforcers. Among the first things radio stations broadcast were time signals, beeps that enabled far‑off settlements and seafaring vessels to set their clocks. Later, radio stations adopted the custom of broadcasting the news every hour, and nowadays, the first item of every news broadcast is the time." },
+            { "label": "P8", "text": "Meanwhile, in order to run the timetable network, inexpensive but precise portable clocks with simple winding mechanisms had spread everywhere. In the world’s ancient cities there might have been at most a few sundials; in European medieval cities there was usually a single clock – a giant machine mounted on top of a high tower in the town square. Today, however, we are surrounded by timepieces: you can tell the time by looking at your wristwatch, glancing at your phone, peering at the alarm clock by the bed, or taking in the taskbar on your computer out of the corner of your eye. You need to make a conscious effort not to know what time it is. The typical person consults these clocks several dozens of times a day, because almost everything we do has to be done on time." }
+          ],
+
+          "questions": [
+            {
+              "number": 27,
+              "type": "MCQ",
+              "question": "Before clocks, agricultural processes relied on time measured by …",
+              "options": {
+                "A": "schedules established by people expert in the field",
+                "B": "behaviour of natural elements",
+                "C": "years mainly since measurement of hours was impossible",
+                "D": "stable routines under which activities were organised"
+              },
+              "answer": "B"
+            },
+            {
+              "number": 28,
+              "type": "MCQ",
+              "question": "What is the author trying to do in Paragraph 3?",
+              "options": {
+                "A": "argue that current methods are not hindered by one employee",
+                "B": "compare patterns of work now with the one in medieval times",
+                "C": "show that people are much more responsible now than they were in medieval times",
+                "D": "explain that present patterns of work require an employee report in advance if they oversleep"
+              },
+              "answer": "A"
+            },
+            {
+              "number": 29,
+              "type": "MCQ",
+              "question": "What does the writer say about schedules and the assembly line?",
+              "options": {
+                "A": "They are not suitable for other domains than industry",
+                "B": "They affected human behaviour in a negative way",
+                "C": "They impacted fields beyond industry",
+                "D": "They improved the scheduling of public transportation"
+              },
+              "answer": "C"
+            },
+            {
+              "number": 30,
+              "type": "MCQ",
+              "question": "With the advent of commercial trains, how was the issue of time differentials solved?",
+              "options": {
+                "A": "All companies decided to adhere to a single time measured by an observatory",
+                "B": "Institutes designed a schedule that would suit all areas",
+                "C": "The whole country decided to use their local time indicators",
+                "D": "They studied natural indicators of time more closely"
+              },
+              "answer": "A"
+            },
+            {
+              "number": 31,
+              "type": "MCQ",
+              "question": "The author states that currently …",
+              "options": {
+                "A": "more time‑keeping devices are being manufactured than ever before",
+                "B": "a wide variety of sources that indicate time means we are baffled about exact time",
+                "C": "availability of clocks everywhere around us has made us more punctual",
+                "D": "it is difficult not to know the time even if one attempts to avoid knowing it"
+              },
+              "answer": "D"
+            },
+            {
+              "number": 32,
+              "type": "MULTIPLE_SELECT",
+              "question": "Which TWO reasons for the lack of detailed transport timetables in 18th‑century Britain are mentioned?",
+              "options": {
+                "A": "Roads were in poor condition",
+                "B": "There were many different transport companies",
+                "C": "Carriages suffered frequent breakdowns",
+                "D": "There was no standard time",
+                "E": "Means of communication were limited"
+              },
+              "answer": ["D", "E"]
+            },
+            { "number": 33, "type": "MULTIPLE_SELECT", "question": "Second box for the same prompt (Q 32).", "options": "see 32", "answer": ["D", "E"] },
+            {
+              "number": 34,
+              "type": "SENTENCE_ENDINGS",
+              "question": "The pioneering workplaces in Britain to operate according to a standard time were …",
+              "options": {
+                "A": "ships at sea",
+                "B": "cheap, mechanical clocks",
+                "C": "government offices",
+                "D": "the train companies",
+                "E": "news broadcasts",
+                "F": "limits on working hours",
+                "G": "objects which register the time",
+                "H": "standard national time"
+              },
+              "answer": "D"
+            },
+            { "number": 35, "type": "SENTENCE_ENDINGS", "question": "The British authority was the initiator of enforcing …", "options": "see 34", "answer": "H" },
+            { "number": 36, "type": "SENTENCE_ENDINGS", "question": "From the outset, radio stations transmitted time signals to benefit …", "options": "see 34", "answer": "A" },
+            { "number": 37, "type": "SENTENCE_ENDINGS", "question": "Currently, traces of time can be found at the top of the agenda of all …", "options": "see 34", "answer": "E" },
+            { "number": 38, "type": "SENTENCE_ENDINGS", "question": "Managing everyday grind according to timetables was simplified by the widespread advent of …", "options": "see 34", "answer": "B" },
+            { "number": 39, "type": "SENTENCE_ENDINGS", "question": "These days, individuals in many countries are surrounded by …", "options": "see 34", "answer": "G" },
+            {
+              "number": 40,
+              "type": "MCQ",
+              "question": "What is the main purpose of the writer of Reading Passage 3?",
+              "options": {
+                "A": "to argue that modern life is needlessly dominated by timetables",
+                "B": "to compare attitudes to time in various parts of the world",
+                "C": "to outline how people’s sense of time has changed over the centuries",
+                "D": "to challenge the view that modern life is less stressful than life in the past"
+              },
+              "answer": "C"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

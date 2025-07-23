@@ -1,0 +1,29 @@
+{
+  "durationMinutes": 60,
+  "tasks": [
+    {
+      "id": "task1",
+      "title": "Writing Task 1",
+      "minWords": 150,
+      "instructions": [
+        "You should spend about 20 minutes on this task.",
+        "The charts below show the different forms in which fish were sold in 1950 and 1985.",
+        "Summarise the information by selecting and reporting the main features, and making comparisons where relevant.",
+        "Write at least 150 words."
+      ],
+      "image": "/fish-sales-charts.png"
+    },
+    {
+      "id": "task2",
+      "title": "Writing Task 2",
+      "minWords": 250,
+      "instructions": [
+        "You should spend about 40 minutes on this task.",
+        "Some of the world’s languages are now spoken very little, so steps should be taken to prevent their complete decline.",
+        "To what extent do you agree or disagree?",
+        "Give reasons for your answer and include any relevant examples from your own knowledge or experience.",
+        "Write at least 250 words."
+      ]
+    }
+  ]
+}
