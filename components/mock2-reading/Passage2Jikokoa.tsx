@@ -21,7 +21,7 @@ interface Props {
 /* helpers */
 const qi = (q: number) => q - 1;
 
-/* ────── Drag‑&‑drop chips for Q14‑20 ────── */
+/* ────── Drag-&-drop chips for Q14-20 ────── */
 const HEADINGS = [
     { v: "i",   txt: "Desirable job opportunities" },
     { v: "ii",  txt: "Design of the jikokoa" },
@@ -96,6 +96,23 @@ function DropSlot({
     );
 }
 
+/* ================== NEW: Option text for Q21-24 ================== */
+const Q21_22_OPTS = [
+    { letter: "A", text: "It’s smaller in overall size." },
+    { letter: "B", text: "It’s easier to control." },
+    { letter: "C", text: "It uses more fuel." },
+    { letter: "D", text: "It’s less expensive to buy." },
+    { letter: "E", text: "It gives off fewer fumes." },
+];
+
+const Q23_24_OPTS = [
+    { letter: "A", text: "It is made in China." },
+    { letter: "B", text: "It can be produced very efficiently." },
+    { letter: "C", text: "It can be bought on credit." },
+    { letter: "D", text: "It comes in a range of colours." },
+    { letter: "E", text: "It is difficult to move." },
+];
+
 /* ============== COMPONENT ============== */
 export default function Passage2Jikokoa({
                                             part,
@@ -105,7 +122,7 @@ export default function Passage2Jikokoa({
     /* Silence “unused variable” for title */
     void part.title;
 
-    /* ------------- Q14‑20 ----------------- */
+    /* ------------- Q14-20 ----------------- */
     const headingNums = [14, 15, 16, 17, 18, 19, 20];
     const chosenHeadings = headingNums.map((n) => answers[qi(n)]);
     const remaining = HEADINGS.filter((h) => !chosenHeadings.includes(h.v));
@@ -115,12 +132,12 @@ export default function Passage2Jikokoa({
         if (!active?.id || !over?.id) return;
 
         const act = String(active.id); // "heading-i" …
-        const ov  = String(over.id);   // "slot-0" …
+        const ov = String(over.id); // "slot-0" …
 
         if (!act.startsWith("heading-") || !ov.startsWith("slot-")) return;
 
         const letter = act.replace("heading-", "");
-        const slot   = Number(ov.replace("slot-", "")); // 0‑6
+        const slot = Number(ov.replace("slot-", "")); // 0-6
 
         const qNum = 14 + slot;
         const alreadyThere = answers[qi(qNum)];
@@ -129,8 +146,7 @@ export default function Passage2Jikokoa({
         onAnswerChange(qi(qNum), letter);
     };
 
-    /* ------------- Q21‑26 (unchanged) ------------- */
-    const letterOpts = ["A", "B", "C", "D", "E"];
+    /* ------------- Q21-26 (logic stays) ------------- */
     const pair1 = [answers[qi(21)], answers[qi(22)]];
     const pair2 = [answers[qi(23)], answers[qi(24)]];
     const setPair = (base: number, idx: number, val: string) => {
@@ -141,11 +157,12 @@ export default function Passage2Jikokoa({
 
     return (
         <div className="space-y-10 mt-4 text-[15px] leading-relaxed">
-            {/* ===== Q14‑20 chips ===== */}
+            {/* ===== Q14-20 chips ===== */}
             <section>
-                <h3 className="text-lg font-semibold mb-2">Questions 14 – 20</h3>
+                <h3 className="text-lg font-semibold mb-2">Questions 14 – 20</h3>
                 <p className="text-sm text-gray-600 mb-4">
-                    Reading Passage 2 has seven sections A‑G. Drag the correct heading <i>i</i>‑<i>ix</i> to each section.
+                    Reading Passage 2 has seven sections A-G. Drag the correct
+                    heading <i>i</i>-<i>ix</i> to each section.
                 </p>
 
                 {/* heading pool & slots */}
@@ -165,7 +182,7 @@ export default function Passage2Jikokoa({
                         ))}
                     </div>
 
-                    {/* slots A‑G */}
+                    {/* slots A-G */}
                     {headingNums.map((n, idx) => (
                         <div key={n} id={`question-${n - 1}`} className="mb-4">
                             <p className="font-medium mb-1">
@@ -184,9 +201,9 @@ export default function Passage2Jikokoa({
             {/* anchor */}
             <div id="question-20" className="h-0" />
 
-            {/* ===== Q21‑24 choose TWO ===== */}
+            {/* ===== Q21-24 choose TWO ===== */}
             <section>
-                <h3 className="text-lg font-semibold mb-2">Questions 21 – 24</h3>
+                <h3 className="text-lg font-semibold mb-2">Questions 21 – 24</h3>
                 <p className="mb-4">
                     Choose <strong>TWO</strong> letters, A–E.
                 </p>
@@ -194,26 +211,30 @@ export default function Passage2Jikokoa({
                 {/* pair 1 */}
                 <div className="mb-6" id="question-20">
                     <p className="font-medium mb-2">
-                        21‑22. Which TWO claims are made about the jikokoa compared to the KCJ?
+                        21-22. Which TWO claims are made about the jikokoa compared to
+                        the KCJ?
                     </p>
-                    {letterOpts.map((opt) => {
-                        const checked = pair1.includes(opt);
+                    {Q21_22_OPTS.map(({ letter, text }) => {
+                        const checked = pair1.includes(letter);
                         return (
                             <label
-                                key={opt}
-                                className="flex items-center gap-2 cursor-pointer select-none pl-6 text-sm"
+                                key={letter}
+                                className="flex items-center gap-2 cursor-pointer select-none pl-6 text-sm py-1"
                             >
                                 <input
                                     type="checkbox"
                                     checked={checked}
                                     onChange={() => {
                                         const idx = checked
-                                            ? pair1.indexOf(opt)
+                                            ? pair1.indexOf(letter)
                                             : pair1.findIndex((v) => !v);
-                                        if (idx !== -1) setPair(21, idx, checked ? "" : opt);
+                                        if (idx !== -1) setPair(21, idx, checked ? "" : letter);
                                     }}
                                 />
-                                <span className="font-semibold">{opt}</span>
+                                <span>
+                                    <span className="font-semibold mr-2">{letter}</span>
+                                    {text}
+                                </span>
                             </label>
                         );
                     })}
@@ -222,26 +243,29 @@ export default function Passage2Jikokoa({
                 {/* pair 2 */}
                 <div id="question-22">
                     <p className="font-medium mb-2">
-                        23‑24. Which TWO statements about the jikokoa are true?
+                        23-24. Which TWO statements about the jikokoa are true?
                     </p>
-                    {letterOpts.map((opt) => {
-                        const checked = pair2.includes(opt);
+                    {Q23_24_OPTS.map(({ letter, text }) => {
+                        const checked = pair2.includes(letter);
                         return (
                             <label
-                                key={opt}
-                                className="flex items-center gap-2 cursor-pointer select-none pl-6 text-sm"
+                                key={letter}
+                                className="flex items-center gap-2 cursor-pointer select-none pl-6 text-sm py-1"
                             >
                                 <input
                                     type="checkbox"
                                     checked={checked}
                                     onChange={() => {
                                         const idx = checked
-                                            ? pair2.indexOf(opt)
+                                            ? pair2.indexOf(letter)
                                             : pair2.findIndex((v) => !v);
-                                        if (idx !== -1) setPair(23, idx, checked ? "" : opt);
+                                        if (idx !== -1) setPair(23, idx, checked ? "" : letter);
                                     }}
                                 />
-                                <span className="font-semibold">{opt}</span>
+                                <span>
+                                    <span className="font-semibold mr-2">{letter}</span>
+                                    {text}
+                                </span>
                             </label>
                         );
                     })}
@@ -251,9 +275,9 @@ export default function Passage2Jikokoa({
             {/* anchors */}
             <div id="question-24" className="h-0" />
 
-            {/* ===== Q25‑26 diagram ===== */}
+            {/* ===== Q25-26 diagram ===== */}
             <section>
-                <h3 className="text-lg font-semibold mb-2">Questions 25 – 26</h3>
+                <h3 className="text-lg font-semibold mb-2">Questions 25 – 26</h3>
                 <p className="mb-4">
                     Label the diagram below. Write <strong>NO MORE THAN TWO WORDS</strong>.
                 </p>
@@ -288,21 +312,21 @@ export default function Passage2Jikokoa({
 
             {/* minimal chip styling */}
             <style jsx>{`
-        .chip {
-          padding: 2px 8px;
-          border: 1px solid #d1d5db;
-          border-radius: 4px;
-          background: #fff;
-          font-size: 13px;
-          line-height: 1.25;
-          display: inline-flex;
-          gap: 2px;
-          white-space: nowrap;
-        }
-        .chip:hover {
-          background: #f3f4f6;
-        }
-      `}</style>
+                .chip {
+                    padding: 2px 8px;
+                    border: 1px solid #d1d5db;
+                    border-radius: 4px;
+                    background: #fff;
+                    font-size: 13px;
+                    line-height: 1.25;
+                    display: inline-flex;
+                    gap: 2px;
+                    white-space: nowrap;
+                }
+                .chip:hover {
+                    background: #f3f4f6;
+                }
+            `}</style>
         </div>
     );
 }

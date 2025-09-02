@@ -1,5 +1,5 @@
-/* app/components/mock2‑reading/Passage3TimeHistory.tsx
-   Passage 3 – Time & History (Questions 27‑40)
+/* app/components/mock2-reading/Passage3TimeHistory.tsx
+   Passage 3 – Time & History (Questions 27-40)
 */
 "use client";
 
@@ -41,8 +41,8 @@ function RadioList({
                             onChange={() => onChange(o.v)}
                         />
                         <span>
-              <strong>{o.v}.</strong> {o.label}
-            </span>
+                            <strong>{o.v}.</strong> {o.label}
+                        </span>
                     </label>
                 </li>
             ))}
@@ -62,29 +62,37 @@ export default function Passage3TimeHistory({
         [part.questions],
     );
 
-    /* ---------- 27‑31 MCQ ---------- */
+    /* ---------- 27-31 MCQ ---------- */
     const mcqNums = [27, 28, 29, 30, 31] as const;
     const letterFor = (i: number) => String.fromCharCode(65 + i); // 0→A
 
-    /* ---------- 32‑33 “Choose TWO” ---------- */
-    const twoLetterOpts = ["A", "B", "C", "D", "E"] as const;
+    /* ---------- 32-33 “Choose TWO” ---------- */
+    // Render as in the document with letter + full option text
+    const TWO_32_33_OPTS = [
+        { v: "A", label: "Roads were in poor condition." },
+        { v: "B", label: "There were many different transport companies." },
+        { v: "C", label: "Carriages suffered frequent breakdowns." },
+        { v: "D", label: "There was no standard time." },
+        { v: "E", label: "Means of communication were limited." },
+    ] as const;
+
     const pair32 = [answers[qi(32)], answers[qi(33)]];
     const setPair = (base: number, idx: 0 | 1, v: string) => {
         const other = answers[qi(base + (idx ^ 1))];
         onAnswerChange(qi(base + idx), v === other ? "" : v);
     };
 
-    /* ---------- 34‑39 sentence endings (A‑H) ---------- */
+    /* ---------- 34-39 sentence endings (A-H) ---------- */
     const endingNums = [34, 35, 36, 37, 38, 39] as const;
     const collectEndingOpts = () => {
-        // if data file has an options object (A‑H) on any of these, reuse it
+        // if data file has an options object (A-H) on any of these, reuse it
         const sample = qMap.get(34)?.options;
         if (sample && typeof sample === "object" && !Array.isArray(sample))
             return Object.entries(sample as Record<string, string>).map(([v, l]) => ({
                 v,
                 label: l,
             }));
-        // else fall back to a hard‑coded list taken from your screenshots
+        // else fall back to a hard-coded list
         return [
             { v: "A", label: "ships at sea" },
             { v: "B", label: "cheap, mechanical clocks" },
@@ -107,11 +115,11 @@ export default function Passage3TimeHistory({
         <div className="space-y-10 mt-4 text-[15px] leading-relaxed">
             <h2 className="sr-only">{part.title}</h2>
 
-            {/* 27‑31 MCQ --------------------------------------------------- */}
+            {/* 27-31 MCQ --------------------------------------------------- */}
             <section>
-                <h3 className="text-lg font-semibold mb-2">Questions 27 – 31</h3>
+                <h3 className="text-lg font-semibold mb-2">Questions 27 – 31</h3>
                 <p className="text-sm text-gray-600 mb-4">
-                    Choose the correct letter, A – D.
+                    Choose the correct letter, A – D.
                 </p>
 
                 {mcqNums.map((n) => {
@@ -141,18 +149,20 @@ export default function Passage3TimeHistory({
                 })}
             </section>
 
-            {/* 32‑33 TWO letters ------------------------------------------ */}
+            {/* 32-33 TWO letters ------------------------------------------ */}
             <section>
-                <h3 className="text-lg font-semibold mb-2">Questions 32 – 33</h3>
+                <h3 className="text-lg font-semibold mb-2">Questions 32 – 33</h3>
                 <p className="mb-4">
                     Below are some possible reasons why there were no detailed transport
-                    timetables in 18th‑century Britain. Which <strong>TWO</strong> of
-                    these reasons are mentioned by the writer?
+                    timetables in 18th-century Britain.
                     <br />
-                    Choose <strong>TWO</strong> letters, A‑E.
+                    Which <strong>TWO</strong> of these reasons are mentioned by the writer of the
+                    passage?
+                    <br />
+                    Choose <strong>TWO</strong> letters, A–E.
                 </p>
 
-                {twoLetterOpts.map((opt) => {
+                {TWO_32_33_OPTS.map(({ v: opt, label }) => {
                     const checkedCount =
                         (pair32[0] === opt ? 1 : 0) + (pair32[1] === opt ? 1 : 0);
                     const checked = checkedCount > 0;
@@ -160,7 +170,7 @@ export default function Passage3TimeHistory({
                     return (
                         <label
                             key={opt}
-                            className={`flex items-center gap-2 cursor-pointer select-none pl-6 text-sm ${
+                            className={`flex items-center gap-2 cursor-pointer select-none pl-6 text-sm py-1 ${
                                 disabled ? "opacity-40 cursor-not-allowed" : ""
                             }`}
                         >
@@ -180,20 +190,22 @@ export default function Passage3TimeHistory({
                                     setPair(32, slot, checked ? "" : opt);
                                 }}
                             />
-                            <span className="font-semibold">{opt}</span>
+                            <span>
+                                <span className="font-semibold mr-2">{opt}</span>
+                                {label}
+                            </span>
                         </label>
                     );
                 })}
             </section>
 
-            {/* 34‑39 sentence endings ------------------------------------- */}
+            {/* 34-39 sentence endings ------------------------------------- */}
             <section>
-                <h3 className="text-lg font-semibold mb-2">Questions 34 – 39</h3>
+                <h3 className="text-lg font-semibold mb-2">Questions 34 – 39</h3>
                 <p className="mb-4">
-                    Complete each sentence with the correct ending, A‑H, from the list
-                    below. Write the correct letter A‑H in boxes 34‑39.
+                    Complete each sentence with the correct ending, A-H, from the list
+                    below. Write the correct letter A-H in boxes 34-39.
                 </p>
-
 
                 {endingNums.map((n) => (
                     <div key={n} id={`question-${n - 1}`} className="mb-4">
@@ -210,23 +222,25 @@ export default function Passage3TimeHistory({
                 ))}
             </section>
 
-            {/* Question 40 single MCQ ------------------------------------ */}
+            {/* Question 40 single MCQ ------------------------------------ */}
             {q40 && (
                 <section>
-                    <h3 className="text-lg font-semibold mb-2">Question 40</h3>
+                    <h3 className="text-lg font-semibold mb-2">Question 40</h3>
                     <p className="font-medium mb-1">{q40.question}</p>
                     <RadioList
                         name="q40"
                         value={answers[qi(40)]}
                         onChange={(v) => onAnswerChange(qi(40), v)}
-                        opts={Array.isArray(q40.options)
-                            ? (q40.options as string[]).map((txt, i) => ({
-                                v: letterFor(i),
-                                label: txt,
-                            }))
-                            : Object.entries(
-                                (q40.options as Record<string, string>) ?? {},
-                            ).map(([v, l]) => ({ v, label: l }))}
+                        opts={
+                            Array.isArray(q40.options)
+                                ? (q40.options as string[]).map((txt, i) => ({
+                                    v: letterFor(i),
+                                    label: txt,
+                                }))
+                                : Object.entries(
+                                    (q40.options as Record<string, string>) ?? {},
+                                ).map(([v, l]) => ({ v, label: l }))
+                        }
                     />
                 </section>
             )}
