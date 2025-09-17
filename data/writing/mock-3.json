@@ -1,0 +1,29 @@
+{
+  "durationMinutes": 60,
+  "tasks": [
+    {
+      "id": "task1",
+      "title": "Writing Task 1",
+      "minWords": 150,
+      "instructions": [
+        "You should spend about 20 minutes on this task.",
+        "The graph below shows the number of complaints made about noise to Environmental Health authorities in the city of Newtown between 1980 and 1996.",
+        "Summarise the information by selecting and reporting the main features, and make comparisons where relevant.",
+        "Write at least 150 words."
+      ]
+    },
+    {
+      "id": "task2",
+      "title": "Writing Task 2",
+      "minWords": 250,
+      "instructions": [
+        "You should spend about 40 minutes on this task.",
+        "Write about the following topic:",
+        "Many people say that cooking and eating at home is better for the individual and the family than eating out in restaurants or canteens.",
+        "Do you agree or disagree?",
+        "Give reasons for your answer and include any relevant examples from your own knowledge or experience.",
+        "Write at least 250 words."
+      ]
+    }
+  ]
+}
