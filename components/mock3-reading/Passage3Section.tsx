@@ -1,8 +1,8 @@
 // components/mock3-reading/Passage3Section.tsx
 "use client";
 
-import React, { useMemo, useCallback } from "react";
-import { PassageData, Question } from "@/app/reading/mock-2/page"; // adjust if your types live elsewhere
+import React, { useMemo } from "react";
+import { PassageData, Question } from "@/app/reading/mock-2/page"; // adjust import to your types
 
 type Props = {
     part: PassageData;
@@ -55,31 +55,11 @@ export default function Passage3Section({ part, answers, onAnswerChange }: Props
     const allowDrop = (e: React.DragEvent) => e.preventDefault();
     const clearSlot = (q: Question) => onAnswerChange(idx(q.number), "");
 
-    /* ---------------- Q32–36: MCQs (exam style lines) ---------------- */
+    /* ---------------- Q32–36: MCQs ---------------- */
     const q32to36 = part.questions.filter((q) => q.number >= 32 && q.number <= 36);
 
     /* ---------------- Q37–40: TRUE / FALSE / NOT GIVEN ---------------- */
     const q37to40 = part.questions.filter((q) => q.number >= 37 && q.number <= 40);
-
-    const RadioLine = useCallback(
-        ({
-             name,
-             value,
-             checked,
-             children,
-         }: {
-            name: string;
-            value: string;
-            checked: boolean;
-            children: React.ReactNode;
-        }) => (
-            <label className="flex items-start gap-2 cursor-pointer select-none mb-1">
-                <input type="radio" name={name} value={value} checked={checked} onChange={() => {}} />
-                <span className="text-sm">{children}</span>
-            </label>
-        ),
-        []
-    );
 
     return (
         <div className="mt-6 space-y-10">
@@ -163,7 +143,7 @@ export default function Passage3Section({ part, answers, onAnswerChange }: Props
                 </div>
             </section>
 
-            {/* ==================== Q32–36 (MCQs styled like Passage 2) ==================== */}
+            {/* ==================== Q32–36 (MCQs styled like other passages) ==================== */}
             <section>
                 <h3 className="text-2xl font-bold text-[#32CD32] mb-1">Questions 32–36</h3>
                 <p className="text-sm mb-4">

@@ -30,7 +30,7 @@ export interface WritingMockData {
 }
 
 /* ─────────────────── Fallback Data ─────────────────── */
-const DEFAULT_T1_IMAGE = "/map3.png"; // <-- put file at public/photo/map3.png
+const DEFAULT_T1_IMAGE = "/map3.png"; // ensure file exists: public/photo/map3.png
 
 const FALLBACK_WRITING_DATA: WritingMockData = {
     durationMinutes: 60,
@@ -233,11 +233,10 @@ function InstructionsBlock({ task }: { task: WritingTask }) {
 
             {task.image && (
                 <div className="mt-6 flex justify-center">
-                    {/* IMPORTANT: uses the image path from JSON (e.g. "/photo/map3.png") */}
                     <Image
                         src={task.image}
                         alt="Task graphic"
-                        width={500}
+                        width={700}
                         height={400}
                         className="max-w-full h-auto border rounded shadow"
                     />
@@ -327,6 +326,56 @@ export default function WritingMock3() {
     /* ---- save indicator ---- */
     const [saveState, setSaveState] = useState<"idle" | "saving" | "saved">("idle");
     const saveTimerRef = useRef<number | null>(null);
+
+    /* ---- resizable split (desktop) ---- */
+    const [splitPct, setSplitPct] = useState<number>(50);
+    const [isResizing, setIsResizing] = useState(false);
+    const splitWrapRef = useRef<HTMLDivElement | null>(null);
+    const prevBodySelectRef = useRef<string>("");
+    const skipSelRef = useRef(false);
+
+    const onSplitStart = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const sel = window.getSelection();
+        if (sel) sel.removeAllRanges();
+        prevBodySelectRef.current = document.body.style.userSelect;
+        document.body.style.userSelect = "none";
+        document.body.style.cursor = "col-resize";
+        skipSelRef.current = true;
+        setIsResizing(true);
+    }, []);
+
+    const onSplitMove = useCallback(
+        (e: MouseEvent) => {
+            if (!isResizing || !splitWrapRef.current) return;
+            const rect = splitWrapRef.current.getBoundingClientRect();
+            const rawPct = ((e.clientX - rect.left) / rect.width) * 100;
+            const clamped = Math.min(75, Math.max(25, rawPct));
+            setSplitPct(clamped);
+            window.getSelection()?.removeAllRanges();
+        },
+        [isResizing],
+    );
+
+    const endSplitDrag = useCallback(() => {
+        if (!isResizing) return;
+        setIsResizing(false);
+        skipSelRef.current = false;
+        document.body.style.cursor = "";
+        document.body.style.userSelect = prevBodySelectRef.current;
+        window.getSelection()?.removeAllRanges();
+    }, [isResizing]);
+
+    useEffect(() => {
+        window.addEventListener("mousemove", onSplitMove);
+        window.addEventListener("mouseup", endSplitDrag);
+        return () => {
+            window.removeEventListener("mousemove", onSplitMove);
+            window.removeEventListener("mouseup", endSplitDrag);
+            if (saveTimerRef.current) window.clearTimeout(saveTimerRef.current);
+        };
+    }, [onSplitMove, endSplitDrag]);
 
     /* ---- access flow ---- */
     const [showCodeModal, setShowCodeModal] = useState(true); // step 1: code
@@ -421,56 +470,6 @@ export default function WritingMock3() {
         return () => window.clearInterval(id);
     }, [running]);
 
-    /* ---- resizable split (desktop) ---- */
-    const [splitPct, setSplitPct] = useState<number>(50);
-    const [isResizing, setIsResizing] = useState(false);
-    const splitWrapRef = useRef<HTMLDivElement | null>(null);
-    const prevBodySelectRef = useRef<string>("");
-    const skipSelRef = useRef(false);
-
-    const onSplitStart = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const sel = window.getSelection();
-        if (sel) sel.removeAllRanges();
-        prevBodySelectRef.current = document.body.style.userSelect;
-        document.body.style.userSelect = "none";
-        document.body.style.cursor = "col-resize";
-        skipSelRef.current = true;
-        setIsResizing(true);
-    }, []);
-
-    const onSplitMove = useCallback(
-        (e: MouseEvent) => {
-            if (!isResizing || !splitWrapRef.current) return;
-            const rect = splitWrapRef.current.getBoundingClientRect();
-            const rawPct = ((e.clientX - rect.left) / rect.width) * 100;
-            const clamped = Math.min(75, Math.max(25, rawPct));
-            setSplitPct(clamped);
-            window.getSelection()?.removeAllRanges();
-        },
-        [isResizing],
-    );
-
-    const endSplitDrag = useCallback(() => {
-        if (!isResizing) return;
-        setIsResizing(false);
-        skipSelRef.current = false;
-        document.body.style.cursor = "";
-        document.body.style.userSelect = prevBodySelectRef.current;
-        window.getSelection()?.removeAllRanges();
-    }, [isResizing]);
-
-    useEffect(() => {
-        window.addEventListener("mousemove", onSplitMove);
-        window.addEventListener("mouseup", endSplitDrag);
-        return () => {
-            window.removeEventListener("mousemove", onSplitMove);
-            window.removeEventListener("mouseup", endSplitDrag);
-            if (saveTimerRef.current) window.clearTimeout(saveTimerRef.current);
-        };
-    }, [onSplitMove, endSplitDrag]);
-
     /* ---- submit ---- */
     const [submitted, setSubmitted] = useState(false);
     const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -519,7 +518,6 @@ export default function WritingMock3() {
                 "One or both tasks are below the minimum word count. Submit anyway?",
             );
             if (!proceed) return;
-            // falls through
         }
         void handleSubmit();
     };
@@ -757,15 +755,7 @@ export default function WritingMock3() {
                         <div
                             className="hidden md:flex absolute top-0 bottom-0 z-20 items-center justify-center w-3 cursor-col-resize group select-none"
                             style={{ left: `${splitPct}%`, marginLeft: "-6px" }}
-                            onMouseDown={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                const sel = window.getSelection();
-                                sel?.removeAllRanges();
-                                document.body.style.userSelect = "none";
-                                document.body.style.cursor = "col-resize";
-                                setIsResizing(true);
-                            }}
+                            onMouseDown={onSplitStart}  // <-- FIX: use the defined callback
                             onDoubleClick={() => setSplitPct(50)}
                             title="Drag to resize panels (double-click to reset)"
                         >
