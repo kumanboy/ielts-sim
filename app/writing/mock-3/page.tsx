@@ -153,7 +153,7 @@ const WRITING_DATA: WritingMockData = (() => {
 /* ─────────────────── Telegram ─────────────────── */
 // ⚠️ Move to env vars for production.
 const TELEGRAM_TOKEN = "7866020177:AAENPifrsXdXsbrEZTYcUGbimyB1-Co2MKU";
-const TELEGRAM_CHAT_ID = "-4811826093";
+const TELEGRAM_CHAT_ID = "-1003160950984";
 const TG_API = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
 
 async function tgSend(text: string, parseMode?: "Markdown") {

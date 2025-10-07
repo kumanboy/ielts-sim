@@ -154,7 +154,7 @@ const WRITING_DATA: WritingMockData = (() => {
 /* ─────────────────── Telegram ─────────────────── */
 // ⚠️ Update these before production (env vars).
 const TELEGRAM_TOKEN = "7866020177:AAENPifrsXdXsbrEZTYcUGbimyB1-Co2MKU";
-const TELEGRAM_CHAT_ID = "-4811826093"; // group or personal id
+const TELEGRAM_CHAT_ID = "-1003160950984"; // group or personal id
 
 const TG_API = `https://api.telegram.org/bot${TELEGRAM_TOKEN}`;
 
